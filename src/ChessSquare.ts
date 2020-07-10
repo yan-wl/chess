@@ -18,6 +18,14 @@ export default class ChessSquare {
     return this._piece;
   }
 
+  isOccupied(): boolean {
+    return this.piece.isOpaque();
+  }
+
+  place(piece: ChessPiece): ChessSquare {
+    return new ChessSquare(this._position, piece);
+  }
+
   toString(): string {
     return `Position: ${this._position.toString()}, Piece: ${this._piece.toString()}`;
   }
