@@ -2,7 +2,7 @@ import ChessMove from "./ChessMove";
 import ChessPositionParser from "./ChessPositionParser";
 
 function isValidRepresentation(representation: string): boolean {
-  const re = /^\s*([A-H]|[a-h])[1-8]->([A-H]|[a-h])[1-8]\s*$/;
+  const re = /^\s*[a-hA-H][1-8]->[a-hA-H][1-8]\s*$/;
   return re.test(representation);
 }
 

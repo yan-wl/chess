@@ -1,7 +1,7 @@
 import { ChessPositionColumn } from "./ChessPositionColumn";
 
 function isValidRepresentation(representation: string): boolean {
-  const re = /^[A-H]|[a-h]$/;
+  const re = /^[a-hA-H]$/;
   return re.test(representation);
 }
 

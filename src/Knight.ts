@@ -6,6 +6,6 @@ export default class Knight extends ChessPiece {
   }
 
   toString(): string {
-    return 'H';
+    return 'N';
   }
 }

@@ -17,7 +17,7 @@ function parse(representation: string): ChessPiece {
       return new Rook();
     case 'B':
       return new Bishop();
-    case 'H':
+    case 'N':
       return new Knight();
     case 'P':
       return new Pawn();

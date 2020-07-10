@@ -1,21 +1,30 @@
-import ChessPiece from "./ChessPiece";
+import ChessSquare from "./ChessSquare";
 
 export default class ChessConfiguration {
-  private _structure: ChessPiece[][];
+  /*
+    NOT TO BE CONFUSED WITH LIGHT AND DARK SQUARES!
+    Black squares hold black pieces. White squares hold white pieces.
+  */
+  private _blackSquares: ChessSquare[];
+  private _whiteSquares: ChessSquare[];
 
-  constructor(structure: ChessPiece[][]) {
-    this._structure = structure;
+  constructor(blackSquares: ChessSquare[], whiteSquares: ChessSquare[]) {
+    this._blackSquares = blackSquares;
+    this._whiteSquares = whiteSquares;
   }
 
   toString(): string {
     let result = '';
-    result = result + '    [BLACK]    ';
-    result = result + '\n';
-    this._structure.forEach(row => {
-      result = result + row.map(row => row.toString()).join('|');
-      result = result + '\n';
+    result += 'Black Squares:\n';
+    this._blackSquares.forEach(square => {
+      result += square.toString();
+      result += '\n';
     });
-    result = result + '    [WHITE]    ';
-    return result.trimRight();
+    result += 'White Squares:\n';
+    this._whiteSquares.forEach(square => {
+      result += square.toString();
+      result += '\n';
+    });
+    return result;
   }
 }

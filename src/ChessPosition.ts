@@ -11,6 +11,6 @@ export default class ChessPosition {
   }
 
   toString(): string {
-    return `${this._column}${this._row}`;
+    return `Row: ${this._row}, Column: ${this._column}`;
   }
 }
