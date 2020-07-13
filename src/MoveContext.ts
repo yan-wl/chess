@@ -11,6 +11,10 @@ export default class MoveContext implements PawnMoveContext {
     this._piecePosition = piecePosition;
   }
 
+  pawnHasNotMoved(): boolean {
+    return true;
+  }
+
   hasPieceInFrontOfPawn(): boolean {
     return this._configuration.isOccupied(this._piecePosition.front);
   }

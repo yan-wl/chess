@@ -1,7 +1,7 @@
 import { ChessPositionColumn } from "./ChessPositionColumn";
 
 function isValidRepresentation(representation: string): boolean {
-  const re = /^[a-hA-H]$/;
+  const re = /^[a-h]$/i;
   return re.test(representation);
 }
 
@@ -28,7 +28,7 @@ function parse(representation: string): ChessPositionColumn {
     case 'H':
       return ChessPositionColumn.H;
     default:
-      throw Error('Invalid column position.');
+      throw Error('Incorrect parser validation.');
   }
 }
 

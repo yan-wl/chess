@@ -22,6 +22,10 @@ export default class ChessBoard {
 
     const movingPiece = this.currentConfiguration.getPieceAt(chessMove.source);
 
+    if (movingPiece === null) {
+      return;
+    }
+
     const possibleMoves = movingPiece.getPossibleMoves(moveContext);
     
     /*

@@ -28,7 +28,7 @@ function parse(representation: string): ChessPositionRow {
     case '8':
       return ChessPositionRow.EIGHT;
     default:
-      throw Error('Invalid row position.');
+      throw Error('Incorrect parser validation.');
   }
 }
 

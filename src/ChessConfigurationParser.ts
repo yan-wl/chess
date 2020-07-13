@@ -8,16 +8,16 @@ import ChessPiece from "./ChessPiece";
 export const REGULAR_CONFIG = `
 bRbNbBbQbKbBbNbR
 bPbPbPbPbPbPbPbP
-b0b0b0b0b0b0b0b0
-b0b0b0b0b0b0b0b0
-w0w0w0w0w0w0w0w0
-w0w0w0w0w0w0w0w0
+bObObObObObObObO
+bObObObObObObObO
+wOwOwOwOwOwOwOwO
+wOwOwOwOwOwOwOwO
 wPwPwPwPwPwPwPwP
 wRwNwBwKwQwBwNwR
 `;
 
 function isValidRepresentation(representation: string): boolean {
-  const re = /^\s*(((w|b)(K|k|Q|q|R|r|B|b|N|n|P|p|0)){8}\s+){7}((w|b)(K|k|Q|q|R|r|B|b|N|n|P|p|0)){8}\s*$/;
+  const re = /^\s*(([wb][kqrbnpo]){8}\s+){7}([wb][kqrbnpo]){8}\s*$/i;
   return re.test(representation);
 }
 
@@ -32,16 +32,14 @@ function parse(representation: string): ChessConfiguration {
   }
 
   let index = 0;
-  const positionMap = new Map<ChessPosition, ChessPiece>();
+  const positionMap = new Map<ChessPosition, ChessPiece | null>();
 
   ['8', '7', '6', '5', '4', '3', '2', '1'].forEach(row => {
     ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'].forEach(column => {
-      const [colour, pieceRepr] = orderedPieces[index].split('') as ['w' | 'b', 'K' | 'k' | 'Q' | 'q' | 'R' | 'r' | 'B' | 'b' | 'N' | 'n' | 'P' | 'p' | '0'];
+      const pieceRepr = orderedPieces[index];
 
       const position = ChessPosition.at(ChessPositionColumnParser.parse(column), ChessPositionRowParser.parse(row));
       const piece = ChessPieceParser.parse(pieceRepr);
-
-      // TODO: Colour not accounted for.
 
       positionMap.set(position, piece);
 

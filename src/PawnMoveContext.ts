@@ -1,3 +1,4 @@
 export default interface PawnMoveContext {
-  hasPieceInFrontOfPawn(): boolean
+  pawnHasNotMoved(): boolean;
+  hasPieceInFrontOfPawn(): boolean;
 }

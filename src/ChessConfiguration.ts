@@ -1,26 +1,24 @@
 import ChessPosition from "./ChessPosition";
 import ChessPiece from "./ChessPiece";
-import ChessMove from "./ChessMove";
-import InvisiblePiece from "./InvisiblePiece";
 
 export default class ChessConfiguration {
   /*
     NOT TO BE CONFUSED WITH LIGHT AND DARK SQUARES!
     Black squares hold black pieces. White squares hold white pieces.
   */
-  private _positionMap: Map<ChessPosition, ChessPiece>;
+  private _positionMap: Map<ChessPosition, ChessPiece | null>;
 
-  constructor(positionMap: Map<ChessPosition, ChessPiece>) {
+  constructor(positionMap: Map<ChessPosition, ChessPiece | null>) {
     this._positionMap = positionMap;
   }
 
   isOccupied(position: ChessPosition): boolean {
     const piece = this.getPieceAt(position);
 
-    return piece.isOpaque();
+    return piece !== null;
   }
 
-  getPieceAt(position: ChessPosition): ChessPiece {
+  getPieceAt(position: ChessPosition): ChessPiece | null {
     const piece = this._positionMap.get(position);
 
     if (piece === undefined) {
@@ -34,7 +32,7 @@ export default class ChessConfiguration {
     const newMap = new Map(this._positionMap);
 
     newMap.set(destination, this.getPieceAt(source));
-    newMap.set(source, new InvisiblePiece());
+    newMap.set(source, null);
 
     return new ChessConfiguration(newMap);
   }
@@ -43,7 +41,7 @@ export default class ChessConfiguration {
     let result = '';
 
     for (const [position, piece] of this._positionMap.entries()) {
-      result += `[${position.toString()}] ${piece.toString()}`;
+      result += `[${position.toString()}] ${piece === null ? 'O' : piece.toString()}`;
       result += '\n';
     }
 

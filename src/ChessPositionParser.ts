@@ -3,7 +3,7 @@ import ChessPositionColumnParser from "./ChessPositionColumnParser";
 import ChessPositionRowParser from "./ChessPositionRowParser";
 
 function isValidRepresentation(representation: string): boolean {
-  const re = /^[a-hA-H][1-8]$/;
+  const re = /^[a-h][1-8]$/i;
   return re.test(representation);
 }
 
