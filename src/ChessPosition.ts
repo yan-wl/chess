@@ -3,11 +3,27 @@ import { ChessPositionColumn } from "./ChessPositionColumn";
 import { BoardMove } from "./BoardMove";
 import { PrimitiveMove } from "./PrimitiveMove";
 
+const cachedPositions = new Map<string, ChessPosition>();
+
 export default class ChessPosition {
   private _column: ChessPositionColumn;
   private _row: ChessPositionRow;
 
-  constructor(column: ChessPositionColumn, row: ChessPositionRow) {
+  static at(column: ChessPositionColumn, row: ChessPositionRow): ChessPosition {
+    const position = new ChessPosition(column, row);
+
+    const cachedPosition = cachedPositions.get(position.hash);
+
+    if (cachedPosition !== undefined) {
+      return cachedPosition;
+    }
+
+    cachedPositions.set(position.hash, position);
+
+    return position;
+  }
+
+  private constructor(column: ChessPositionColumn, row: ChessPositionRow) {
     this._column = column;
     this._row = row;
   }
@@ -43,7 +59,7 @@ export default class ChessPosition {
         break;
     }
 
-    return new ChessPosition(frontColumn, frontRow);
+    return ChessPosition.at(frontColumn, frontRow);
   }
 
   get back(): ChessPosition {
@@ -77,7 +93,7 @@ export default class ChessPosition {
         break;
     }
 
-    return new ChessPosition(backColumn, backRow);
+    return ChessPosition.at(backColumn, backRow);
   }
 
   get left(): ChessPosition {
@@ -111,7 +127,7 @@ export default class ChessPosition {
         break;
     }
 
-    return new ChessPosition(leftColumn, leftRow);
+    return ChessPosition.at(leftColumn, leftRow);
   }
 
   get right(): ChessPosition {
@@ -145,7 +161,13 @@ export default class ChessPosition {
         break;
     }
 
-    return new ChessPosition(rightColumn, rightRow);
+    return ChessPosition.at(rightColumn, rightRow);
+  }
+
+  // This returns a unique string for positions with different column or row,
+  // and returns the same string for different instances with same column and row.
+  get hash(): string {
+    return `${this._column}${this._row}`;
   }
 
   apply(steps: BoardMove): ChessPosition {
@@ -166,10 +188,6 @@ export default class ChessPosition {
       case PrimitiveMove.RIGHT:
         return this.right.apply(remainingSteps);
     }
-  }
-
-  sameAs(otherPosition: ChessPosition): boolean {
-    return this._column === otherPosition._column && this._row === otherPosition._row;
   }
 
   toString(): string {

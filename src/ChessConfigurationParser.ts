@@ -1,9 +1,9 @@
 import ChessConfiguration from "./ChessConfiguration";
 import ChessPieceParser from "./ChessPieceParser";
-import ChessSquare from "./ChessSquare";
 import ChessPosition from "./ChessPosition";
 import ChessPositionColumnParser from "./ChessPositionColumnParser";
 import ChessPositionRowParser from "./ChessPositionRowParser";
+import ChessPiece from "./ChessPiece";
 
 export const REGULAR_CONFIG = `
 bRbNbBbQbKbBbNbR
@@ -31,25 +31,25 @@ function parse(representation: string): ChessConfiguration {
     throw Error('Invalid chess configuration.');
   }
 
-  const blackSquares: ChessSquare[] = [];
-  const whiteSquares: ChessSquare[] = [];
-
   let index = 0;
+  const positionMap = new Map<ChessPosition, ChessPiece>();
 
   ['8', '7', '6', '5', '4', '3', '2', '1'].forEach(row => {
     ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'].forEach(column => {
-      const [colour, piece] = orderedPieces[index].split('') as ['w' | 'b', 'K' | 'k' | 'Q' | 'q' | 'R' | 'r' | 'B' | 'b' | 'N' | 'n' | 'P' | 'p' | '0'];
-      const chessSquare = new ChessSquare(new ChessPosition(ChessPositionColumnParser.parse(column), ChessPositionRowParser.parse(row)), ChessPieceParser.parse(piece));
-      if (colour === 'w') {
-        whiteSquares.push(chessSquare);
-      } else {
-        blackSquares.push(chessSquare);
-      }
+      const [colour, pieceRepr] = orderedPieces[index].split('') as ['w' | 'b', 'K' | 'k' | 'Q' | 'q' | 'R' | 'r' | 'B' | 'b' | 'N' | 'n' | 'P' | 'p' | '0'];
+
+      const position = ChessPosition.at(ChessPositionColumnParser.parse(column), ChessPositionRowParser.parse(row));
+      const piece = ChessPieceParser.parse(pieceRepr);
+
+      // TODO: Colour not accounted for.
+
+      positionMap.set(position, piece);
+
       index++;
     });
   });
 
-  return new ChessConfiguration(blackSquares, whiteSquares);
+  return new ChessConfiguration(positionMap);
 }
 
 export default {

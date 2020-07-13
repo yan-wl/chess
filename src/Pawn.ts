@@ -15,7 +15,7 @@ export default class Pawn extends ChessPiece {
   getPossibleMoves(moveContext: PawnMoveContext): BoardMove[] {
     const possibleMoves: BoardMove[] = [];
 
-    if (!moveContext.hasPieceInFront()) {
+    if (!moveContext.hasPieceInFrontOfPawn()) {
       possibleMoves.push([PrimitiveMove.UP]);
     }
 

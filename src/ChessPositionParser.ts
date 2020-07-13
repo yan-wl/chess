@@ -12,7 +12,7 @@ function parse(representation: string): ChessPosition {
     throw Error('Invalid chess position.');
   }
   const [column, row] = representation.split('');
-  return new ChessPosition(ChessPositionColumnParser.parse(column), ChessPositionRowParser.parse(row));
+  return ChessPosition.at(ChessPositionColumnParser.parse(column), ChessPositionRowParser.parse(row));
 }
 
 export default {
