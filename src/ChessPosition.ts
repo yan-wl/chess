@@ -28,6 +28,14 @@ export default class ChessPosition {
     this._row = row;
   }
 
+  get row(): ChessPositionRow {
+    return this._row;
+  }
+
+  get column(): ChessPositionColumn {
+    return this._column;
+  }
+
   get front(): ChessPosition {
     const frontColumn = this._column;
     let frontRow: ChessPositionRow;

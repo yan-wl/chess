@@ -12,6 +12,10 @@ export default class ChessConfiguration {
     this._positionMap = positionMap;
   }
 
+  get positionMap(): Map<ChessPosition, ChessPiece | null> {
+    return this._positionMap;
+  }
+
   isOccupied(position: ChessPosition): boolean {
     const piece = this.getPieceAt(position);
 

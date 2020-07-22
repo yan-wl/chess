@@ -12,6 +12,7 @@ export default class MoveContext implements PawnMoveContext {
   }
 
   pawnHasNotMoved(): boolean {
+    // TODO: Implement
     return true;
   }
 
