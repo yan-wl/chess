@@ -14,16 +14,17 @@ export default class ChessBoard {
   }
 
   move(chessMove: ChessMove): void {
-    const moveContext = new MoveContext(
-      this.currentConfiguration,
-      chessMove.source
-    );
-
     const movingPiece = this.currentConfiguration.getPieceAt(chessMove.source);
 
     if (movingPiece === null) {
       return;
     }
+
+    const moveContext = new MoveContext(
+      this.currentConfiguration,
+      chessMove.source,
+      movingPiece
+    );
 
     const possibleMoves = movingPiece.getPossibleMoves(moveContext);
 
@@ -32,7 +33,11 @@ export default class ChessBoard {
     */
     const allowed = possibleMoves.some((move) => {
       const resultingPosition = chessMove.source.apply(move);
-      return chessMove.destination === resultingPosition;
+
+      return (
+        resultingPosition.isWithinBoundary() &&
+        chessMove.destination === resultingPosition
+      );
     });
 
     // TODO: Add legality checks

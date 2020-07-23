@@ -66,6 +66,8 @@ function serialize(column: ChessPositionColumn): string {
       return 'G';
     case ChessPositionColumn.H:
       return 'H';
+    case ChessPositionColumn.OUTSIDE:
+      throw Error('Attempting to serialize an out of bounds position.');
   }
 }
 

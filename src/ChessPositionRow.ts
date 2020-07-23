@@ -6,5 +6,6 @@ export enum ChessPositionRow {
   FIVE,
   SIX,
   SEVEN,
-  EIGHT
+  EIGHT,
+  OUTSIDE
 }

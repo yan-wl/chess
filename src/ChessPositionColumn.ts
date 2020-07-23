@@ -6,5 +6,6 @@ export enum ChessPositionColumn {
   E,
   F,
   G,
-  H
+  H,
+  OUTSIDE
 }

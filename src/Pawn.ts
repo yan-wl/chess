@@ -16,8 +16,28 @@ export default class Pawn extends ChessPiece {
       possibleMoves.push([PrimitiveMove.UP]);
     }
 
-    if (moveContext.pawnHasNotMoved()) {
+    if (
+      moveContext.pawnHasNotMoved() &&
+      !moveContext.hasPieceInFrontOfPawn() &&
+      !moveContext.hasPieceTwoSquaresInFrontOfPawn()
+    ) {
       possibleMoves.push([PrimitiveMove.UP, PrimitiveMove.UP]);
+    }
+
+    if (moveContext.leftEnPassantIsAllowed()) {
+      possibleMoves.push([PrimitiveMove.UP, PrimitiveMove.LEFT]);
+    }
+
+    if (moveContext.rightEnPassantIsAllowed()) {
+      possibleMoves.push([PrimitiveMove.UP, PrimitiveMove.RIGHT]);
+    }
+
+    if (moveContext.hasEnemyOnDiagonalLeft()) {
+      possibleMoves.push([PrimitiveMove.UP, PrimitiveMove.LEFT]);
+    }
+
+    if (moveContext.hasEnemyOnDiagonalRight()) {
+      possibleMoves.push([PrimitiveMove.UP, PrimitiveMove.RIGHT]);
     }
 
     return possibleMoves;

@@ -66,6 +66,8 @@ function serialize(row: ChessPositionRow): string {
       return '7';
     case ChessPositionRow.EIGHT:
       return '8';
+    case ChessPositionRow.OUTSIDE:
+      throw Error('Attempting to serialize an out of bounds position.');
   }
 }
 

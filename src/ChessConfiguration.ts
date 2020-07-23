@@ -22,35 +22,35 @@ export default class ChessConfiguration {
     return piece !== null;
   }
 
+  /**
+   * To retrieve the chess piece placed at any position
+   *
+   * @param position a chess position
+   * @returns the chess piece in the position or null if there is none
+   * @throws error if the position is unknown
+   */
   getPieceAt(position: ChessPosition): ChessPiece | null {
     const piece = this._positionMap.get(position);
 
     if (piece === undefined) {
-      throw Error('Invalid position.');
+      throw Error('Invalid chess position.');
     }
 
     return piece;
   }
 
   move(source: ChessPosition, destination: ChessPosition): ChessConfiguration {
+    if (!source.isWithinBoundary() || !destination.isWithinBoundary()) {
+      throw Error('Invalid move request.');
+    }
+
+    const sourcePiece = this.getPieceAt(source);
+
     const newMap = new Map(this._positionMap);
 
-    newMap.set(destination, this.getPieceAt(source));
+    newMap.set(destination, sourcePiece);
     newMap.set(source, null);
 
     return new ChessConfiguration(newMap);
-  }
-
-  toString(): string {
-    let result = '';
-
-    for (const [position, piece] of this._positionMap.entries()) {
-      result += `[${position.toString()}] ${
-        piece === null ? 'O' : piece.toString()
-      }`;
-      result += '\n';
-    }
-
-    return result;
   }
 }

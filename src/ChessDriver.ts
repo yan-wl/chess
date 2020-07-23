@@ -42,7 +42,7 @@ async function start() {
       );
       IO.write('\n');
     } catch (error) {
-      IO.write('Invalid move.\n');
+      IO.write('Error encountered.\n');
     }
   }
 }
