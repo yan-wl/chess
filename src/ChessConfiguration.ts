@@ -1,5 +1,5 @@
-import ChessPosition from "./ChessPosition";
-import ChessPiece from "./ChessPiece";
+import ChessPosition from './ChessPosition';
+import ChessPiece from './ChessPiece';
 
 export default class ChessConfiguration {
   /*
@@ -45,7 +45,9 @@ export default class ChessConfiguration {
     let result = '';
 
     for (const [position, piece] of this._positionMap.entries()) {
-      result += `[${position.toString()}] ${piece === null ? 'O' : piece.toString()}`;
+      result += `[${position.toString()}] ${
+        piece === null ? 'O' : piece.toString()
+      }`;
       result += '\n';
     }
 

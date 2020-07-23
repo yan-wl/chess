@@ -1,4 +1,4 @@
-import { ChessPositionRow } from "./ChessPositionRow";
+import { ChessPositionRow } from './ChessPositionRow';
 
 function isValidRepresentation(representation: string): boolean {
   const re = /^[1-8]$/;
@@ -7,9 +7,9 @@ function isValidRepresentation(representation: string): boolean {
 
 /**
  * To parse a serialized chess position row
- * 
+ *
  * @remarks Implemented such that parse(serialize(row)) === row
- * 
+ *
  * @param representation string that represents a chess position row
  * @returns the corresponding row if valid, else throws an error
  */
@@ -18,7 +18,7 @@ function parse(representation: string): ChessPositionRow {
     throw Error('Invalid row position.');
   }
 
-  switch(representation) {
+  switch (representation) {
     case '1':
       return ChessPositionRow.ONE;
     case '2':
@@ -42,14 +42,14 @@ function parse(representation: string): ChessPositionRow {
 
 /**
  * To serialize a chess position row
- * 
+ *
  * @remarks Implemented such that row === parse(serialize(row))
- * 
+ *
  * @param row chess position row to serialize
  * @returns string that can be parsed back into the same object
  */
 function serialize(row: ChessPositionRow): string {
-  switch(row) {
+  switch (row) {
     case ChessPositionRow.ONE:
       return '1';
     case ChessPositionRow.TWO:

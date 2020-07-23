@@ -1,8 +1,8 @@
-import ChessPiece from "./ChessPiece";
-import { BoardMove } from "./BoardMove";
-import PawnMoveContext from "./PawnMoveContext";
-import { PrimitiveMove } from "./PrimitiveMove";
-import { PieceColour } from "./PieceColour";
+import ChessPiece from './ChessPiece';
+import { BoardMove } from './BoardMove';
+import PawnMoveContext from './PawnMoveContext';
+import { PrimitiveMove } from './PrimitiveMove';
+import { PieceColour } from './PieceColour';
 
 export default class Pawn extends ChessPiece {
   constructor(colour: PieceColour) {

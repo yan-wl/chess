@@ -1,6 +1,6 @@
-import PawnMoveContext from "./PawnMoveContext";
-import ChessConfiguration from "./ChessConfiguration";
-import ChessPosition from "./ChessPosition";
+import PawnMoveContext from './PawnMoveContext';
+import ChessConfiguration from './ChessConfiguration';
+import ChessPosition from './ChessPosition';
 
 export default class MoveContext implements PawnMoveContext {
   private _configuration: ChessConfiguration;

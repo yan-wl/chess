@@ -1,4 +1,4 @@
-import { PieceColour } from "./PieceColour";
+import { PieceColour } from './PieceColour';
 
 function isValidRepresentation(representation: string): boolean {
   const re = /^[wb]$/i;
@@ -7,9 +7,9 @@ function isValidRepresentation(representation: string): boolean {
 
 /**
  * To parse a serialized piece colour
- * 
+ *
  * @remarks Implemented such that parse(serialize(colour)) === colour
- * 
+ *
  * @param representation string that represents a piece colour
  * @returns the correponding piece colour if valid, else throws an error
  */
@@ -18,7 +18,7 @@ function parse(representation: string): PieceColour {
     throw Error('Invalid piece colour.');
   }
 
-  switch(representation.toUpperCase()) {
+  switch (representation.toUpperCase()) {
     case 'W':
       return PieceColour.WHITE;
     case 'B':
@@ -30,14 +30,14 @@ function parse(representation: string): PieceColour {
 
 /**
  * To serialize a piece colour
- * 
+ *
  * @remarks Implemented such that colour === parse(serialize(colour))
- * 
+ *
  * @param colour piece colour to serialize
  * @returns string that represents the piece colour
  */
 function serialize(colour: PieceColour): string {
-  switch(colour) {
+  switch (colour) {
     case PieceColour.BLACK:
       return 'B';
     case PieceColour.WHITE:

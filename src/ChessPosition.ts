@@ -1,7 +1,7 @@
-import { ChessPositionRow } from "./ChessPositionRow";
-import { ChessPositionColumn } from "./ChessPositionColumn";
-import { BoardMove } from "./BoardMove";
-import { PrimitiveMove } from "./PrimitiveMove";
+import { ChessPositionRow } from './ChessPositionRow';
+import { ChessPositionColumn } from './ChessPositionColumn';
+import { BoardMove } from './BoardMove';
+import { PrimitiveMove } from './PrimitiveMove';
 
 const cachedPositions = new Map<string, ChessPosition>();
 
@@ -40,11 +40,11 @@ export default class ChessPosition {
     const frontColumn = this._column;
     let frontRow: ChessPositionRow;
 
-    switch(this._row) {
+    switch (this._row) {
       case ChessPositionRow.ONE:
         frontRow = ChessPositionRow.TWO;
         break;
-      case ChessPositionRow.TWO: 
+      case ChessPositionRow.TWO:
         frontRow = ChessPositionRow.THREE;
         break;
       case ChessPositionRow.THREE:
@@ -56,13 +56,13 @@ export default class ChessPosition {
       case ChessPositionRow.FIVE:
         frontRow = ChessPositionRow.SIX;
         break;
-      case ChessPositionRow.SIX: 
+      case ChessPositionRow.SIX:
         frontRow = ChessPositionRow.SEVEN;
         break;
-      case ChessPositionRow.SEVEN: 
+      case ChessPositionRow.SEVEN:
         frontRow = ChessPositionRow.EIGHT;
         break;
-      case ChessPositionRow.EIGHT: 
+      case ChessPositionRow.EIGHT:
         frontRow = ChessPositionRow.EIGHT;
         break;
     }
@@ -74,11 +74,11 @@ export default class ChessPosition {
     const backColumn = this._column;
     let backRow: ChessPositionRow;
 
-    switch(this._row) {
+    switch (this._row) {
       case ChessPositionRow.ONE:
         backRow = ChessPositionRow.ONE;
         break;
-      case ChessPositionRow.TWO: 
+      case ChessPositionRow.TWO:
         backRow = ChessPositionRow.ONE;
         break;
       case ChessPositionRow.THREE:
@@ -90,13 +90,13 @@ export default class ChessPosition {
       case ChessPositionRow.FIVE:
         backRow = ChessPositionRow.FOUR;
         break;
-      case ChessPositionRow.SIX: 
+      case ChessPositionRow.SIX:
         backRow = ChessPositionRow.FIVE;
         break;
-      case ChessPositionRow.SEVEN: 
+      case ChessPositionRow.SEVEN:
         backRow = ChessPositionRow.SIX;
         break;
-      case ChessPositionRow.EIGHT: 
+      case ChessPositionRow.EIGHT:
         backRow = ChessPositionRow.SEVEN;
         break;
     }
@@ -108,7 +108,7 @@ export default class ChessPosition {
     const leftRow = this._row;
     let leftColumn: ChessPositionColumn;
 
-    switch(this._column) {
+    switch (this._column) {
       case ChessPositionColumn.A:
         leftColumn = ChessPositionColumn.A;
         break;
@@ -142,7 +142,7 @@ export default class ChessPosition {
     const rightRow = this._row;
     let rightColumn: ChessPositionColumn;
 
-    switch(this._column) {
+    switch (this._column) {
       case ChessPositionColumn.A:
         rightColumn = ChessPositionColumn.B;
         break;
@@ -186,7 +186,7 @@ export default class ChessPosition {
     const nextStep = steps[0];
     const remainingSteps = steps.slice(1);
 
-    switch(nextStep) {
+    switch (nextStep) {
       case PrimitiveMove.UP:
         return this.front.apply(remainingSteps);
       case PrimitiveMove.DOWN:

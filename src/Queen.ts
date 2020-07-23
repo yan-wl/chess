@@ -1,7 +1,7 @@
-import ChessPiece from "./ChessPiece";
-import MoveContext from "./MoveContext";
-import { BoardMove } from "./BoardMove";
-import { PieceColour } from "./PieceColour";
+import ChessPiece from './ChessPiece';
+import MoveContext from './MoveContext';
+import { BoardMove } from './BoardMove';
+import { PieceColour } from './PieceColour';
 
 export default class Queen extends ChessPiece {
   constructor(colour: PieceColour) {

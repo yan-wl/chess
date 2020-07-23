@@ -1,6 +1,6 @@
-import ChessConfiguration from "./ChessConfiguration";
-import ChessMove from "./ChessMove";
-import MoveContext from "./MoveContext";
+import ChessConfiguration from './ChessConfiguration';
+import ChessMove from './ChessMove';
+import MoveContext from './MoveContext';
 
 export default class ChessBoard {
   private _configurations: ChessConfiguration[];
@@ -14,7 +14,10 @@ export default class ChessBoard {
   }
 
   move(chessMove: ChessMove): void {
-    const moveContext = new MoveContext(this.currentConfiguration, chessMove.source);
+    const moveContext = new MoveContext(
+      this.currentConfiguration,
+      chessMove.source
+    );
 
     const movingPiece = this.currentConfiguration.getPieceAt(chessMove.source);
 
@@ -23,11 +26,11 @@ export default class ChessBoard {
     }
 
     const possibleMoves = movingPiece.getPossibleMoves(moveContext);
-    
+
     /*
       This is potentially too inefficient.
     */
-    const allowed = possibleMoves.some(move => {
+    const allowed = possibleMoves.some((move) => {
       const resultingPosition = chessMove.source.apply(move);
       return chessMove.destination === resultingPosition;
     });
@@ -35,7 +38,10 @@ export default class ChessBoard {
     // TODO: Add legality checks
 
     if (allowed) {
-      const newConfig = this.currentConfiguration.move(chessMove.source, chessMove.destination);
+      const newConfig = this.currentConfiguration.move(
+        chessMove.source,
+        chessMove.destination
+      );
       this._configurations.push(newConfig);
     } else {
       throw Error('Invalid move.');

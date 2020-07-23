@@ -1,4 +1,4 @@
-import ChessPosition from "./ChessPosition";
+import ChessPosition from './ChessPosition';
 
 export default class ChessMove {
   private _source: ChessPosition;

@@ -1,11 +1,11 @@
-import ChessPiece from "./ChessPiece";
-import Pawn from "./Pawn";
-import King from "./King";
-import Queen from "./Queen";
-import Rook from "./Rook";
-import Bishop from "./Bishop";
-import Knight from "./Knight";
-import PieceColourParser from "./PieceColourParser";
+import ChessPiece from './ChessPiece';
+import Pawn from './Pawn';
+import King from './King';
+import Queen from './Queen';
+import Rook from './Rook';
+import Bishop from './Bishop';
+import Knight from './Knight';
+import PieceColourParser from './PieceColourParser';
 
 function isValidRepresentation(representation: string): boolean {
   const re = /^[wb][kqrbnpo]$/i;
@@ -14,9 +14,9 @@ function isValidRepresentation(representation: string): boolean {
 
 /**
  * To parse a serialized chess piece
- * 
+ *
  * @remarks Implemented such that parse(serialize(piece)) === piece
- * 
+ *
  * @param representation string that represents a chess piece
  * @returns the corresponding chess piece if valid, else throws an error
  */
@@ -27,7 +27,7 @@ function parse(representation: string): ChessPiece | null {
 
   const [colour, type] = representation.split('');
 
-  switch(type.toUpperCase()) {
+  switch (type.toUpperCase()) {
     case 'K':
       return new King(PieceColourParser.parse(colour));
     case 'Q':
@@ -49,9 +49,9 @@ function parse(representation: string): ChessPiece | null {
 
 /**
  * To serialize a chess piece
- * 
+ *
  * @remarks Implemented such that piece === parse(serialize(piece))
- * 
+ *
  * @param piece chess piece to serialize
  * @returns string that represents the chess piece
  */

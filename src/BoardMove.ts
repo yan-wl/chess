@@ -1,3 +1,3 @@
-import { PrimitiveMove } from "./PrimitiveMove";
+import { PrimitiveMove } from './PrimitiveMove';
 
 export type BoardMove = PrimitiveMove[];
