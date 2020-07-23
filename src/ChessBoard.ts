@@ -13,10 +13,6 @@ export default class ChessBoard {
     return this._configurations[this._configurations.length - 1];
   }
 
-  toString(): string {
-    return this.currentConfiguration.toString();
-  }
-
   move(chessMove: ChessMove): void {
     const moveContext = new MoveContext(this.currentConfiguration, chessMove.source);
 

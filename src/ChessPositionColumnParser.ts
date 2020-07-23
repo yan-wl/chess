@@ -5,6 +5,14 @@ function isValidRepresentation(representation: string): boolean {
   return re.test(representation);
 }
 
+/**
+ * To parse a serialized chess position column
+ * 
+ * @remarks Implemented such that parse(serialize(column)) === column
+ * 
+ * @param representation string that represents a chess position column
+ * @returns the corresponding column if valid, else throws an error
+ */
 function parse(representation: string): ChessPositionColumn {
   if (!isValidRepresentation(representation)) {
     throw Error('Invalid column position.');
@@ -32,6 +40,36 @@ function parse(representation: string): ChessPositionColumn {
   }
 }
 
+/**
+ * To serialize a chess position column
+ * 
+ * @remarks Implemented such that column === parse(serialize(column))
+ * 
+ * @param column chess position column to serialize
+ * @returns string that can be parsed back into the same object
+ */
+function serialize(column: ChessPositionColumn): string {
+  switch(column) {
+    case ChessPositionColumn.A:
+      return 'A';
+    case ChessPositionColumn.B:
+      return 'B';
+    case ChessPositionColumn.C:
+      return 'C';
+    case ChessPositionColumn.D:
+      return 'D';
+    case ChessPositionColumn.E:
+      return 'E';
+    case ChessPositionColumn.F:
+      return 'F';
+    case ChessPositionColumn.G:
+      return 'G';
+    case ChessPositionColumn.H:
+      return 'H';
+  }
+}
+
 export default {
-  parse
+  parse,
+  serialize
 };

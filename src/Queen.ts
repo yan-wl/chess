@@ -11,8 +11,4 @@ export default class Queen extends ChessPiece {
   getPossibleMoves(moveContext: MoveContext): BoardMove[] {
     return [];
   }
-
-  toString(): string {
-    return 'Q';
-  }
 }

@@ -14,5 +14,4 @@ export default abstract class ChessPiece {
   }
 
   abstract getPossibleMoves(moveContext: MoveContext): BoardMove[];
-  abstract toString(): string;
 }

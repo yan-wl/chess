@@ -22,8 +22,4 @@ export default class Pawn extends ChessPiece {
 
     return possibleMoves;
   }
-
-  toString(): string {
-    return 'P';
-  }
 }

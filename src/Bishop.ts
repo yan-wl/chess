@@ -11,8 +11,4 @@ export default class Bishop extends ChessPiece {
   getPossibleMoves(moveContext: MoveContext): BoardMove[] {
     return [];
   }
-
-  toString(): string {
-    return 'B';
-  }
 }

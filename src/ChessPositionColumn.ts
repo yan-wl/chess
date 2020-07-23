@@ -1,10 +1,10 @@
 export enum ChessPositionColumn {
-  A = 'A',
-  B = 'B',
-  C = 'C',
-  D = 'D',
-  E = 'E',
-  F = 'F',
-  G = 'G',
-  H = 'H'
+  A,
+  B,
+  C,
+  D,
+  E,
+  F,
+  G,
+  H
 }

@@ -12,6 +12,14 @@ function isValidRepresentation(representation: string): boolean {
   return re.test(representation);
 }
 
+/**
+ * To parse a serialized chess piece
+ * 
+ * @remarks Implemented such that parse(serialize(piece)) === piece
+ * 
+ * @param representation string that represents a chess piece
+ * @returns the corresponding chess piece if valid, else throws an error
+ */
 function parse(representation: string): ChessPiece | null {
   if (!isValidRepresentation(representation)) {
     throw Error('Invalid chess piece.');
@@ -39,6 +47,43 @@ function parse(representation: string): ChessPiece | null {
   }
 }
 
+/**
+ * To serialize a chess piece
+ * 
+ * @remarks Implemented such that piece === parse(serialize(piece))
+ * 
+ * @param piece chess piece to serialize
+ * @returns string that represents the chess piece
+ */
+function serialize(piece: ChessPiece | null): string {
+  // Colour does not matter for null pieces; white is arbitrarily chosen
+  if (piece === null) {
+    return 'WO';
+  }
+
+  const colour: string = PieceColourParser.serialize(piece.colour);
+  let type: string;
+
+  if (piece instanceof King) {
+    type = 'K';
+  } else if (piece instanceof Queen) {
+    type = 'Q';
+  } else if (piece instanceof Rook) {
+    type = 'R';
+  } else if (piece instanceof Bishop) {
+    type = 'B';
+  } else if (piece instanceof Knight) {
+    type = 'K';
+  } else if (piece instanceof Pawn) {
+    type = 'P';
+  } else {
+    throw Error('Unknown piece type.');
+  }
+
+  return `${colour}${type}`;
+}
+
 export default {
-  parse
+  parse,
+  serialize
 };

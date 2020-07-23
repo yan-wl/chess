@@ -11,21 +11,34 @@ const IO = readline.createInterface({
 const chessBoard = new ChessBoard(ChessConfigurationParser.parse(REGULAR_CONFIG));
 
 IO.write('Starting position:\n');
-IO.write(chessBoard.toString());
+IO.write(ChessConfigurationParser.serialize(chessBoard.currentConfiguration));
 IO.write('\n');
 
-function askForMoves() {
-  IO.question('Enter your move: ', (answer) => {
+const EXIT_COMMAND = 'quit';
+
+function prompt(question: string): Promise<string> {
+  return new Promise((resolve) => {
+    IO.question(question, (answer) => resolve(answer))
+  })
+}
+
+async function start() {
+  while(true) {
+    const answer = await prompt('Enter your move: ');
+  
+    if (answer === EXIT_COMMAND) {
+      IO.close();
+      break;
+    }
+  
     try {
       chessBoard.move(ChessMoveParser.parse(answer));
-      IO.write(chessBoard.toString());
+      IO.write(ChessConfigurationParser.serialize(chessBoard.currentConfiguration));
       IO.write('\n');
     } catch (error) {
       IO.write('Invalid move.\n');
-    } finally {
-      askForMoves();
     }
-  });
+  }
 }
 
-askForMoves();
+start()

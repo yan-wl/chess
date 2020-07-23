@@ -16,8 +16,4 @@ export default class ChessMove {
   get destination(): ChessPosition {
     return this._destination;
   }
- 
-  toString(): string {
-    return `${this._source.toString()}->${this._destination.toString()}`;
-  }
 }

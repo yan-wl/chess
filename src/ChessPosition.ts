@@ -197,8 +197,4 @@ export default class ChessPosition {
         return this.right.apply(remainingSteps);
     }
   }
-
-  toString(): string {
-    return `Row: ${this._row}, Column: ${this._column}`;
-  }
 }
