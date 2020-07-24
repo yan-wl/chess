@@ -1,4 +1,4 @@
-import { BoardMove } from './BoardMove';
+import { Move } from './Move';
 import MoveContext from './MoveContext';
 import { PieceColour } from './PieceColour';
 
@@ -13,5 +13,5 @@ export default abstract class ChessPiece {
     return this._colour;
   }
 
-  abstract getPossibleMoves(moveContext: MoveContext): BoardMove[];
+  abstract getPossibleMoves(moveContext: MoveContext): Move[];
 }

@@ -1,80 +1,80 @@
 import ChessPiece from './ChessPiece';
 import KnightMoveContext from './KnightMoveContext';
-import { BoardMove } from './BoardMove';
+import { Move } from './Move';
 import { PieceColour } from './PieceColour';
-import { PrimitiveMove } from './PrimitiveMove';
+import { RelativePosition } from './RelativePosition';
 
 export default class Knight extends ChessPiece {
   constructor(colour: PieceColour) {
     super(colour);
   }
 
-  getPossibleMoves(moveContext: KnightMoveContext): BoardMove[] {
-    const possibleMoves: BoardMove[] = [];
+  getPossibleMoves(moveContext: KnightMoveContext): Move[] {
+    const possibleMoves: Move[] = [];
 
     // NOTE: Using === false is intentional to account for undefined.
 
     if (moveContext.hasAllyOnOne() === false) {
       possibleMoves.push([
-        PrimitiveMove.UP,
-        PrimitiveMove.UP,
-        PrimitiveMove.RIGHT
+        RelativePosition.FRONT,
+        RelativePosition.FRONT,
+        RelativePosition.RIGHT
       ]);
     }
 
     if (moveContext.hasAllyOnTwo() === false) {
       possibleMoves.push([
-        PrimitiveMove.RIGHT,
-        PrimitiveMove.RIGHT,
-        PrimitiveMove.UP
+        RelativePosition.RIGHT,
+        RelativePosition.RIGHT,
+        RelativePosition.FRONT
       ]);
     }
 
     if (moveContext.hasAllyOnFour() === false) {
       possibleMoves.push([
-        PrimitiveMove.RIGHT,
-        PrimitiveMove.RIGHT,
-        PrimitiveMove.DOWN
+        RelativePosition.RIGHT,
+        RelativePosition.RIGHT,
+        RelativePosition.BACK
       ]);
     }
 
     if (moveContext.hasAllyOnFive() === false) {
       possibleMoves.push([
-        PrimitiveMove.DOWN,
-        PrimitiveMove.DOWN,
-        PrimitiveMove.RIGHT
+        RelativePosition.BACK,
+        RelativePosition.BACK,
+        RelativePosition.RIGHT
       ]);
     }
 
     if (moveContext.hasAllyOnSeven() === false) {
       possibleMoves.push([
-        PrimitiveMove.DOWN,
-        PrimitiveMove.DOWN,
-        PrimitiveMove.LEFT
+        RelativePosition.BACK,
+        RelativePosition.BACK,
+        RelativePosition.LEFT
       ]);
     }
 
     if (moveContext.hasAllyOnEight() === false) {
       possibleMoves.push([
-        PrimitiveMove.LEFT,
-        PrimitiveMove.LEFT,
-        PrimitiveMove.DOWN
+        RelativePosition.LEFT,
+        RelativePosition.LEFT,
+        RelativePosition.BACK
       ]);
     }
 
     if (moveContext.hasAllyOnTen() === false) {
       possibleMoves.push([
-        PrimitiveMove.LEFT,
-        PrimitiveMove.LEFT,
-        PrimitiveMove.UP
+        RelativePosition.LEFT,
+        RelativePosition.LEFT,
+        RelativePosition.FRONT
       ]);
     }
 
     if (moveContext.hasAllyOnEleven() === false) {
       possibleMoves.push([
-        PrimitiveMove.UP,
-        PrimitiveMove.UP,
-        PrimitiveMove.LEFT
+        RelativePosition.FRONT,
+        RelativePosition.FRONT,
+        RelativePosition.LEFT
       ]);
     }
 

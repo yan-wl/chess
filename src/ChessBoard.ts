@@ -2,14 +2,25 @@ import ChessConfiguration from './ChessConfiguration';
 import ChessMove from './ChessMove';
 import MoveContext from './MoveContext';
 import MoveHistory from './MoveHistory';
+import { Orientation } from './Orientation';
 
 export default class ChessBoard {
   private _configurations: ChessConfiguration[];
   private _moveHistory: MoveHistory;
+  private _orientation: Orientation;
 
   constructor(initConfig: ChessConfiguration) {
     this._configurations = [initConfig];
     this._moveHistory = new MoveHistory();
+    this._orientation = Orientation.WHITE;
+  }
+
+  private flip(): void {
+    if (this._orientation === Orientation.WHITE) {
+      this._orientation = Orientation.BLACK;
+    } else {
+      this._orientation = Orientation.WHITE;
+    }
   }
 
   get currentConfiguration(): ChessConfiguration {
@@ -27,7 +38,8 @@ export default class ChessBoard {
       this.currentConfiguration,
       chessMove.source,
       movingPiece,
-      this._moveHistory
+      this._moveHistory,
+      this._orientation
     );
 
     const possibleMoves = movingPiece.getPossibleMoves(moveContext);
@@ -36,7 +48,7 @@ export default class ChessBoard {
       This is potentially too inefficient.
     */
     const allowed = possibleMoves.some((move) => {
-      const resultingPosition = chessMove.source.apply(move);
+      const resultingPosition = chessMove.source.apply(move, this._orientation);
 
       return (
         resultingPosition.isWithinBoundary() &&
@@ -56,6 +68,7 @@ export default class ChessBoard {
         piece: movingPiece,
         move: chessMove
       });
+      this.flip();
     } else {
       throw Error('Invalid move.');
     }

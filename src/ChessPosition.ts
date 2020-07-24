@@ -1,7 +1,8 @@
 import { ChessPositionRow } from './ChessPositionRow';
 import { ChessPositionColumn } from './ChessPositionColumn';
-import { BoardMove } from './BoardMove';
-import { PrimitiveMove } from './PrimitiveMove';
+import { Move } from './Move';
+import { RelativePosition } from './RelativePosition';
+import { Orientation } from './Orientation';
 
 const cachedPositions = new Map<string, ChessPosition>();
 
@@ -35,164 +36,164 @@ export default class ChessPosition {
     return this._column;
   }
 
-  get front(): ChessPosition {
+  private get up(): ChessPosition {
     if (!this.isWithinBoundary()) {
       return this;
     }
 
-    const frontColumn = this._column;
-    let frontRow: ChessPositionRow;
+    const column = this._column;
+    let row: ChessPositionRow;
 
     switch (this._row) {
       case ChessPositionRow.ONE:
-        frontRow = ChessPositionRow.TWO;
+        row = ChessPositionRow.TWO;
         break;
       case ChessPositionRow.TWO:
-        frontRow = ChessPositionRow.THREE;
+        row = ChessPositionRow.THREE;
         break;
       case ChessPositionRow.THREE:
-        frontRow = ChessPositionRow.FOUR;
+        row = ChessPositionRow.FOUR;
         break;
       case ChessPositionRow.FOUR:
-        frontRow = ChessPositionRow.FIVE;
+        row = ChessPositionRow.FIVE;
         break;
       case ChessPositionRow.FIVE:
-        frontRow = ChessPositionRow.SIX;
+        row = ChessPositionRow.SIX;
         break;
       case ChessPositionRow.SIX:
-        frontRow = ChessPositionRow.SEVEN;
+        row = ChessPositionRow.SEVEN;
         break;
       case ChessPositionRow.SEVEN:
-        frontRow = ChessPositionRow.EIGHT;
+        row = ChessPositionRow.EIGHT;
         break;
       case ChessPositionRow.EIGHT:
-        frontRow = ChessPositionRow.OUTSIDE;
+        row = ChessPositionRow.OUTSIDE;
         break;
       default:
         throw Error('Error in boundary handling.');
     }
 
-    return ChessPosition.at(frontColumn, frontRow);
+    return ChessPosition.at(column, row);
   }
 
-  get back(): ChessPosition {
+  private get down(): ChessPosition {
     if (!this.isWithinBoundary()) {
       return this;
     }
 
-    const backColumn = this._column;
-    let backRow: ChessPositionRow;
+    const column = this._column;
+    let row: ChessPositionRow;
 
     switch (this._row) {
       case ChessPositionRow.ONE:
-        backRow = ChessPositionRow.OUTSIDE;
+        row = ChessPositionRow.OUTSIDE;
         break;
       case ChessPositionRow.TWO:
-        backRow = ChessPositionRow.ONE;
+        row = ChessPositionRow.ONE;
         break;
       case ChessPositionRow.THREE:
-        backRow = ChessPositionRow.TWO;
+        row = ChessPositionRow.TWO;
         break;
       case ChessPositionRow.FOUR:
-        backRow = ChessPositionRow.THREE;
+        row = ChessPositionRow.THREE;
         break;
       case ChessPositionRow.FIVE:
-        backRow = ChessPositionRow.FOUR;
+        row = ChessPositionRow.FOUR;
         break;
       case ChessPositionRow.SIX:
-        backRow = ChessPositionRow.FIVE;
+        row = ChessPositionRow.FIVE;
         break;
       case ChessPositionRow.SEVEN:
-        backRow = ChessPositionRow.SIX;
+        row = ChessPositionRow.SIX;
         break;
       case ChessPositionRow.EIGHT:
-        backRow = ChessPositionRow.SEVEN;
+        row = ChessPositionRow.SEVEN;
         break;
       default:
         throw Error('Error in boundary handling.');
     }
 
-    return ChessPosition.at(backColumn, backRow);
+    return ChessPosition.at(column, row);
   }
 
-  get left(): ChessPosition {
+  private get left(): ChessPosition {
     if (!this.isWithinBoundary()) {
       return this;
     }
 
-    const leftRow = this._row;
-    let leftColumn: ChessPositionColumn;
+    const row = this._row;
+    let column: ChessPositionColumn;
 
     switch (this._column) {
       case ChessPositionColumn.A:
-        leftColumn = ChessPositionColumn.OUTSIDE;
+        column = ChessPositionColumn.OUTSIDE;
         break;
       case ChessPositionColumn.B:
-        leftColumn = ChessPositionColumn.A;
+        column = ChessPositionColumn.A;
         break;
       case ChessPositionColumn.C:
-        leftColumn = ChessPositionColumn.B;
+        column = ChessPositionColumn.B;
         break;
       case ChessPositionColumn.D:
-        leftColumn = ChessPositionColumn.C;
+        column = ChessPositionColumn.C;
         break;
       case ChessPositionColumn.E:
-        leftColumn = ChessPositionColumn.D;
+        column = ChessPositionColumn.D;
         break;
       case ChessPositionColumn.F:
-        leftColumn = ChessPositionColumn.E;
+        column = ChessPositionColumn.E;
         break;
       case ChessPositionColumn.G:
-        leftColumn = ChessPositionColumn.F;
+        column = ChessPositionColumn.F;
         break;
       case ChessPositionColumn.H:
-        leftColumn = ChessPositionColumn.G;
+        column = ChessPositionColumn.G;
         break;
       default:
         throw Error('Error in boundary handling.');
     }
 
-    return ChessPosition.at(leftColumn, leftRow);
+    return ChessPosition.at(column, row);
   }
 
-  get right(): ChessPosition {
+  private get right(): ChessPosition {
     if (!this.isWithinBoundary()) {
       return this;
     }
 
-    const rightRow = this._row;
-    let rightColumn: ChessPositionColumn;
+    const row = this._row;
+    let column: ChessPositionColumn;
 
     switch (this._column) {
       case ChessPositionColumn.A:
-        rightColumn = ChessPositionColumn.B;
+        column = ChessPositionColumn.B;
         break;
       case ChessPositionColumn.B:
-        rightColumn = ChessPositionColumn.C;
+        column = ChessPositionColumn.C;
         break;
       case ChessPositionColumn.C:
-        rightColumn = ChessPositionColumn.D;
+        column = ChessPositionColumn.D;
         break;
       case ChessPositionColumn.D:
-        rightColumn = ChessPositionColumn.E;
+        column = ChessPositionColumn.E;
         break;
       case ChessPositionColumn.E:
-        rightColumn = ChessPositionColumn.F;
+        column = ChessPositionColumn.F;
         break;
       case ChessPositionColumn.F:
-        rightColumn = ChessPositionColumn.G;
+        column = ChessPositionColumn.G;
         break;
       case ChessPositionColumn.G:
-        rightColumn = ChessPositionColumn.H;
+        column = ChessPositionColumn.H;
         break;
       case ChessPositionColumn.H:
-        rightColumn = ChessPositionColumn.OUTSIDE;
+        column = ChessPositionColumn.OUTSIDE;
         break;
       default:
         throw Error('Error in boundary handling.');
     }
 
-    return ChessPosition.at(rightColumn, rightRow);
+    return ChessPosition.at(column, row);
   }
 
   // This returns a unique string for positions with different column or row,
@@ -201,7 +202,7 @@ export default class ChessPosition {
     return `${this._column}${this._row}`;
   }
 
-  apply(steps: BoardMove): ChessPosition {
+  apply(steps: Move, orientation: Orientation): ChessPosition {
     if (!this.isWithinBoundary()) {
       return this;
     }
@@ -213,15 +214,28 @@ export default class ChessPosition {
     const nextStep = steps[0];
     const remainingSteps = steps.slice(1);
 
-    switch (nextStep) {
-      case PrimitiveMove.UP:
-        return this.front.apply(remainingSteps);
-      case PrimitiveMove.DOWN:
-        return this.back.apply(remainingSteps);
-      case PrimitiveMove.LEFT:
-        return this.left.apply(remainingSteps);
-      case PrimitiveMove.RIGHT:
-        return this.right.apply(remainingSteps);
+    if (orientation === Orientation.WHITE) {
+      switch (nextStep) {
+        case RelativePosition.FRONT:
+          return this.up.apply(remainingSteps, orientation);
+        case RelativePosition.BACK:
+          return this.down.apply(remainingSteps, orientation);
+        case RelativePosition.LEFT:
+          return this.left.apply(remainingSteps, orientation);
+        case RelativePosition.RIGHT:
+          return this.right.apply(remainingSteps, orientation);
+      }
+    } else {
+      switch (nextStep) {
+        case RelativePosition.FRONT:
+          return this.down.apply(remainingSteps, orientation);
+        case RelativePosition.BACK:
+          return this.up.apply(remainingSteps, orientation);
+        case RelativePosition.LEFT:
+          return this.right.apply(remainingSteps, orientation);
+        case RelativePosition.RIGHT:
+          return this.left.apply(remainingSteps, orientation);
+      }
     }
   }
 

@@ -1,7 +1,7 @@
 import ChessPiece from './ChessPiece';
-import { BoardMove } from './BoardMove';
+import { Move } from './Move';
 import PawnMoveContext from './PawnMoveContext';
-import { PrimitiveMove } from './PrimitiveMove';
+import { RelativePosition } from './RelativePosition';
 import { PieceColour } from './PieceColour';
 
 export default class Pawn extends ChessPiece {
@@ -9,13 +9,13 @@ export default class Pawn extends ChessPiece {
     super(colour);
   }
 
-  getPossibleMoves(moveContext: PawnMoveContext): BoardMove[] {
-    const possibleMoves: BoardMove[] = [];
+  getPossibleMoves(moveContext: PawnMoveContext): Move[] {
+    const possibleMoves: Move[] = [];
 
     // NOTE: Using === false is intentional to account for undefined.
 
     if (moveContext.hasPieceInFront() === false) {
-      possibleMoves.push([PrimitiveMove.UP]);
+      possibleMoves.push([RelativePosition.FRONT]);
     }
 
     if (
@@ -23,23 +23,23 @@ export default class Pawn extends ChessPiece {
       moveContext.hasPieceInFront() === false &&
       moveContext.hasPieceTwoSquaresInFront() === false
     ) {
-      possibleMoves.push([PrimitiveMove.UP, PrimitiveMove.UP]);
+      possibleMoves.push([RelativePosition.FRONT, RelativePosition.FRONT]);
     }
 
     if (moveContext.leftEnPassantIsAllowed()) {
-      possibleMoves.push([PrimitiveMove.UP, PrimitiveMove.LEFT]);
+      possibleMoves.push([RelativePosition.FRONT, RelativePosition.LEFT]);
     }
 
     if (moveContext.rightEnPassantIsAllowed()) {
-      possibleMoves.push([PrimitiveMove.UP, PrimitiveMove.RIGHT]);
+      possibleMoves.push([RelativePosition.FRONT, RelativePosition.RIGHT]);
     }
 
     if (moveContext.hasEnemyFrontLeft()) {
-      possibleMoves.push([PrimitiveMove.UP, PrimitiveMove.LEFT]);
+      possibleMoves.push([RelativePosition.FRONT, RelativePosition.LEFT]);
     }
 
     if (moveContext.hasEnemyFrontRight()) {
-      possibleMoves.push([PrimitiveMove.UP, PrimitiveMove.RIGHT]);
+      possibleMoves.push([RelativePosition.FRONT, RelativePosition.RIGHT]);
     }
 
     return possibleMoves;

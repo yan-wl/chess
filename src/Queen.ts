@@ -1,38 +1,38 @@
 import ChessPiece from './ChessPiece';
 import QueenMoveContext from './QueenMoveContext';
-import { BoardMove } from './BoardMove';
+import { Move } from './Move';
 import { PieceColour } from './PieceColour';
-import { PrimitiveMove } from './PrimitiveMove';
+import { RelativePosition } from './RelativePosition';
 
 export default class Queen extends ChessPiece {
   constructor(colour: PieceColour) {
     super(colour);
   }
 
-  getPossibleMoves(moveContext: QueenMoveContext): BoardMove[] {
-    const possibleMoves: BoardMove[] = [];
+  getPossibleMoves(moveContext: QueenMoveContext): Move[] {
+    const possibleMoves: Move[] = [];
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenFrontLane(i)) {
-        possibleMoves.push(Array(i).fill(PrimitiveMove.UP));
+        possibleMoves.push(Array(i).fill(RelativePosition.FRONT));
       }
     }
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenBackLane(i)) {
-        possibleMoves.push(Array(i).fill(PrimitiveMove.DOWN));
+        possibleMoves.push(Array(i).fill(RelativePosition.BACK));
       }
     }
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenLeftLane(i)) {
-        possibleMoves.push(Array(i).fill(PrimitiveMove.LEFT));
+        possibleMoves.push(Array(i).fill(RelativePosition.LEFT));
       }
     }
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenRightLane(i)) {
-        possibleMoves.push(Array(i).fill(PrimitiveMove.RIGHT));
+        possibleMoves.push(Array(i).fill(RelativePosition.RIGHT));
       }
     }
 
@@ -44,9 +44,9 @@ export default class Queen extends ChessPiece {
             .fill(null)
             .map((_, index) => {
               if (index % 2 === 0) {
-                return PrimitiveMove.UP;
+                return RelativePosition.FRONT;
               } else {
-                return PrimitiveMove.RIGHT;
+                return RelativePosition.RIGHT;
               }
             })
         );
@@ -60,9 +60,9 @@ export default class Queen extends ChessPiece {
             .fill(null)
             .map((_, index) => {
               if (index % 2 === 0) {
-                return PrimitiveMove.DOWN;
+                return RelativePosition.BACK;
               } else {
-                return PrimitiveMove.RIGHT;
+                return RelativePosition.RIGHT;
               }
             })
         );
@@ -76,9 +76,9 @@ export default class Queen extends ChessPiece {
             .fill(null)
             .map((_, index) => {
               if (index % 2 === 0) {
-                return PrimitiveMove.DOWN;
+                return RelativePosition.BACK;
               } else {
-                return PrimitiveMove.LEFT;
+                return RelativePosition.LEFT;
               }
             })
         );
@@ -92,9 +92,9 @@ export default class Queen extends ChessPiece {
             .fill(null)
             .map((_, index) => {
               if (index % 2 === 0) {
-                return PrimitiveMove.UP;
+                return RelativePosition.FRONT;
               } else {
-                return PrimitiveMove.LEFT;
+                return RelativePosition.LEFT;
               }
             })
         );

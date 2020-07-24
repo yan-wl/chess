@@ -1,16 +1,16 @@
 import ChessPiece from './ChessPiece';
 import BishopMoveContext from './BishopMoveContext';
-import { BoardMove } from './BoardMove';
+import { Move } from './Move';
 import { PieceColour } from './PieceColour';
-import { PrimitiveMove } from './PrimitiveMove';
+import { RelativePosition } from './RelativePosition';
 
 export default class Bishop extends ChessPiece {
   constructor(colour: PieceColour) {
     super(colour);
   }
 
-  getPossibleMoves(moveContext: BishopMoveContext): BoardMove[] {
-    const possibleMoves: BoardMove[] = [];
+  getPossibleMoves(moveContext: BishopMoveContext): Move[] {
+    const possibleMoves: Move[] = [];
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenNorthEastDiagonal(i)) {
@@ -20,9 +20,9 @@ export default class Bishop extends ChessPiece {
             .fill(null)
             .map((_, index) => {
               if (index % 2 === 0) {
-                return PrimitiveMove.UP;
+                return RelativePosition.FRONT;
               } else {
-                return PrimitiveMove.RIGHT;
+                return RelativePosition.RIGHT;
               }
             })
         );
@@ -36,9 +36,9 @@ export default class Bishop extends ChessPiece {
             .fill(null)
             .map((_, index) => {
               if (index % 2 === 0) {
-                return PrimitiveMove.DOWN;
+                return RelativePosition.BACK;
               } else {
-                return PrimitiveMove.RIGHT;
+                return RelativePosition.RIGHT;
               }
             })
         );
@@ -52,9 +52,9 @@ export default class Bishop extends ChessPiece {
             .fill(null)
             .map((_, index) => {
               if (index % 2 === 0) {
-                return PrimitiveMove.DOWN;
+                return RelativePosition.BACK;
               } else {
-                return PrimitiveMove.LEFT;
+                return RelativePosition.LEFT;
               }
             })
         );
@@ -68,9 +68,9 @@ export default class Bishop extends ChessPiece {
             .fill(null)
             .map((_, index) => {
               if (index % 2 === 0) {
-                return PrimitiveMove.UP;
+                return RelativePosition.FRONT;
               } else {
-                return PrimitiveMove.LEFT;
+                return RelativePosition.LEFT;
               }
             })
         );

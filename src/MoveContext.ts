@@ -9,6 +9,8 @@ import QueenMoveContext from './QueenMoveContext';
 import KingMoveContext from './KingMoveContext';
 import MoveHistory from './MoveHistory';
 import Pawn from './Pawn';
+import { RelativePosition } from './RelativePosition';
+import { Orientation } from './Orientation';
 
 export default class MoveContext
   implements
@@ -22,17 +24,20 @@ export default class MoveContext
   private _piecePosition: ChessPosition;
   private _piece: ChessPiece;
   private _history: MoveHistory;
+  private _orientation: Orientation;
 
   constructor(
     configuration: ChessConfiguration,
     piecePosition: ChessPosition,
     piece: ChessPiece,
-    history: MoveHistory
+    history: MoveHistory,
+    orientation: Orientation
   ) {
     this._configuration = configuration;
     this._piecePosition = piecePosition;
     this._piece = piece;
     this._history = history;
+    this._orientation = orientation;
   }
 
   pawnHasNotMoved(): boolean {
@@ -44,7 +49,10 @@ export default class MoveContext
   }
 
   hasPieceInFront(): boolean | undefined {
-    const frontPosition = this._piecePosition.front;
+    const frontPosition = this._piecePosition.apply(
+      [RelativePosition.FRONT],
+      this._orientation
+    );
 
     if (!frontPosition.isWithinBoundary()) {
       return undefined;
@@ -56,7 +64,10 @@ export default class MoveContext
   }
 
   hasPieceTwoSquaresInFront(): boolean | undefined {
-    const frontPosition = this._piecePosition.front.front;
+    const frontPosition = this._piecePosition.apply(
+      [RelativePosition.FRONT, RelativePosition.FRONT],
+      this._orientation
+    );
 
     if (!frontPosition.isWithinBoundary()) {
       return undefined;
@@ -68,7 +79,10 @@ export default class MoveContext
   }
 
   leftEnPassantIsAllowed(): boolean {
-    const frontLeftPosition = this._piecePosition.front.left;
+    const frontLeftPosition = this._piecePosition.apply(
+      [RelativePosition.FRONT, RelativePosition.LEFT],
+      this._orientation
+    );
 
     if (!frontLeftPosition.isWithinBoundary()) {
       return false;
@@ -90,8 +104,17 @@ export default class MoveContext
     const latestPiece = latestRecord.piece;
 
     if (
-      latestMove.source !== this._piecePosition.front.front.left ||
-      latestMove.destination !== this._piecePosition.left ||
+      latestMove.source !==
+        this._piecePosition.apply(
+          [
+            RelativePosition.FRONT,
+            RelativePosition.FRONT,
+            RelativePosition.LEFT
+          ],
+          this._orientation
+        ) ||
+      latestMove.destination !==
+        this._piecePosition.apply([RelativePosition.LEFT], this._orientation) ||
       !(latestPiece instanceof Pawn)
     ) {
       return false;
@@ -101,7 +124,10 @@ export default class MoveContext
   }
 
   rightEnPassantIsAllowed(): boolean {
-    const frontRightPosition = this._piecePosition.front.right;
+    const frontRightPosition = this._piecePosition.apply(
+      [RelativePosition.FRONT, RelativePosition.RIGHT],
+      this._orientation
+    );
 
     if (!frontRightPosition.isWithinBoundary()) {
       return false;
@@ -123,8 +149,20 @@ export default class MoveContext
     const latestPiece = latestRecord.piece;
 
     if (
-      latestMove.source !== this._piecePosition.front.front.right ||
-      latestMove.destination !== this._piecePosition.right ||
+      latestMove.source !==
+        this._piecePosition.apply(
+          [
+            RelativePosition.FRONT,
+            RelativePosition.FRONT,
+            RelativePosition.RIGHT
+          ],
+          this._orientation
+        ) ||
+      latestMove.destination !==
+        this._piecePosition.apply(
+          [RelativePosition.RIGHT],
+          this._orientation
+        ) ||
       !(latestPiece instanceof Pawn)
     ) {
       return false;
@@ -134,7 +172,10 @@ export default class MoveContext
   }
 
   hasEnemyFrontLeft(): boolean {
-    const frontLeftPosition = this._piecePosition.front.left;
+    const frontLeftPosition = this._piecePosition.apply(
+      [RelativePosition.FRONT, RelativePosition.LEFT],
+      this._orientation
+    );
 
     if (!frontLeftPosition.isWithinBoundary()) {
       return false;
@@ -153,7 +194,10 @@ export default class MoveContext
   }
 
   hasEnemyFrontRight(): boolean {
-    const frontRightPosition = this._piecePosition.front.right;
+    const frontRightPosition = this._piecePosition.apply(
+      [RelativePosition.FRONT, RelativePosition.RIGHT],
+      this._orientation
+    );
 
     if (!frontRightPosition.isWithinBoundary()) {
       return false;
@@ -172,7 +216,10 @@ export default class MoveContext
   }
 
   hasAllyOnOne(): boolean | undefined {
-    const destination = this._piecePosition.front.front.right;
+    const destination = this._piecePosition.apply(
+      [RelativePosition.FRONT, RelativePosition.FRONT, RelativePosition.RIGHT],
+      this._orientation
+    );
 
     if (!destination.isWithinBoundary()) {
       return undefined;
@@ -192,7 +239,10 @@ export default class MoveContext
   }
 
   hasAllyOnTwo(): boolean | undefined {
-    const destination = this._piecePosition.right.right.front;
+    const destination = this._piecePosition.apply(
+      [RelativePosition.RIGHT, RelativePosition.RIGHT, RelativePosition.FRONT],
+      this._orientation
+    );
 
     if (!destination.isWithinBoundary()) {
       return undefined;
@@ -212,7 +262,10 @@ export default class MoveContext
   }
 
   hasAllyOnFour(): boolean | undefined {
-    const destination = this._piecePosition.right.right.back;
+    const destination = this._piecePosition.apply(
+      [RelativePosition.RIGHT, RelativePosition.RIGHT, RelativePosition.BACK],
+      this._orientation
+    );
 
     if (!destination.isWithinBoundary()) {
       return undefined;
@@ -232,7 +285,10 @@ export default class MoveContext
   }
 
   hasAllyOnFive(): boolean | undefined {
-    const destination = this._piecePosition.back.back.right;
+    const destination = this._piecePosition.apply(
+      [RelativePosition.BACK, RelativePosition.BACK, RelativePosition.RIGHT],
+      this._orientation
+    );
 
     if (!destination.isWithinBoundary()) {
       return undefined;
@@ -252,7 +308,10 @@ export default class MoveContext
   }
 
   hasAllyOnSeven(): boolean | undefined {
-    const destination = this._piecePosition.back.back.left;
+    const destination = this._piecePosition.apply(
+      [RelativePosition.BACK, RelativePosition.BACK, RelativePosition.LEFT],
+      this._orientation
+    );
 
     if (!destination.isWithinBoundary()) {
       return undefined;
@@ -272,7 +331,10 @@ export default class MoveContext
   }
 
   hasAllyOnEight(): boolean | undefined {
-    const destination = this._piecePosition.left.left.back;
+    const destination = this._piecePosition.apply(
+      [RelativePosition.LEFT, RelativePosition.LEFT, RelativePosition.BACK],
+      this._orientation
+    );
 
     if (!destination.isWithinBoundary()) {
       return undefined;
@@ -292,7 +354,10 @@ export default class MoveContext
   }
 
   hasAllyOnTen(): boolean | undefined {
-    const destination = this._piecePosition.left.left.front;
+    const destination = this._piecePosition.apply(
+      [RelativePosition.LEFT, RelativePosition.LEFT, RelativePosition.FRONT],
+      this._orientation
+    );
 
     if (!destination.isWithinBoundary()) {
       return undefined;
@@ -312,7 +377,10 @@ export default class MoveContext
   }
 
   hasAllyOnEleven(): boolean | undefined {
-    const destination = this._piecePosition.front.front.left;
+    const destination = this._piecePosition.apply(
+      [RelativePosition.FRONT, RelativePosition.FRONT, RelativePosition.LEFT],
+      this._orientation
+    );
 
     if (!destination.isWithinBoundary()) {
       return undefined;
@@ -339,7 +407,10 @@ export default class MoveContext
     let currentPosition = this._piecePosition;
 
     while (stepCount > 1) {
-      const frontPosition = currentPosition.front;
+      const frontPosition = currentPosition.apply(
+        [RelativePosition.FRONT],
+        this._orientation
+      );
 
       if (!frontPosition.isWithinBoundary()) {
         return false;
@@ -356,7 +427,10 @@ export default class MoveContext
     }
 
     // Check final step separately
-    const frontPosition = currentPosition.front;
+    const frontPosition = currentPosition.apply(
+      [RelativePosition.FRONT],
+      this._orientation
+    );
 
     if (!frontPosition.isWithinBoundary()) {
       return false;
@@ -379,7 +453,10 @@ export default class MoveContext
     let currentPosition = this._piecePosition;
 
     while (stepCount > 1) {
-      const backPosition = currentPosition.back;
+      const backPosition = currentPosition.apply(
+        [RelativePosition.BACK],
+        this._orientation
+      );
 
       if (!backPosition.isWithinBoundary()) {
         return false;
@@ -396,7 +473,10 @@ export default class MoveContext
     }
 
     // Check final step separately
-    const backPosition = currentPosition.back;
+    const backPosition = currentPosition.apply(
+      [RelativePosition.BACK],
+      this._orientation
+    );
 
     if (!backPosition.isWithinBoundary()) {
       return false;
@@ -419,7 +499,10 @@ export default class MoveContext
     let currentPosition = this._piecePosition;
 
     while (stepCount > 1) {
-      const leftPosition = currentPosition.left;
+      const leftPosition = currentPosition.apply(
+        [RelativePosition.LEFT],
+        this._orientation
+      );
 
       if (!leftPosition.isWithinBoundary()) {
         return false;
@@ -436,7 +519,10 @@ export default class MoveContext
     }
 
     // Check final step separately
-    const leftPosition = currentPosition.left;
+    const leftPosition = currentPosition.apply(
+      [RelativePosition.LEFT],
+      this._orientation
+    );
 
     if (!leftPosition.isWithinBoundary()) {
       return false;
@@ -459,7 +545,10 @@ export default class MoveContext
     let currentPosition = this._piecePosition;
 
     while (stepCount > 1) {
-      const rightPosition = currentPosition.right;
+      const rightPosition = currentPosition.apply(
+        [RelativePosition.RIGHT],
+        this._orientation
+      );
 
       if (!rightPosition.isWithinBoundary()) {
         return false;
@@ -476,7 +565,10 @@ export default class MoveContext
     }
 
     // Check final step separately
-    const rightPosition = currentPosition.right;
+    const rightPosition = currentPosition.apply(
+      [RelativePosition.RIGHT],
+      this._orientation
+    );
 
     if (!rightPosition.isWithinBoundary()) {
       return false;
@@ -499,7 +591,10 @@ export default class MoveContext
     let currentPosition = this._piecePosition;
 
     while (stepCount > 1) {
-      const diagonalPosition = currentPosition.front.right;
+      const diagonalPosition = currentPosition.apply(
+        [RelativePosition.FRONT, RelativePosition.RIGHT],
+        this._orientation
+      );
 
       if (!diagonalPosition.isWithinBoundary()) {
         return false;
@@ -516,7 +611,10 @@ export default class MoveContext
     }
 
     // Check final step separately
-    const diagonalPosition = currentPosition.front.right;
+    const diagonalPosition = currentPosition.apply(
+      [RelativePosition.FRONT, RelativePosition.RIGHT],
+      this._orientation
+    );
 
     if (!diagonalPosition.isWithinBoundary()) {
       return false;
@@ -539,7 +637,10 @@ export default class MoveContext
     let currentPosition = this._piecePosition;
 
     while (stepCount > 1) {
-      const diagonalPosition = currentPosition.back.right;
+      const diagonalPosition = currentPosition.apply(
+        [RelativePosition.BACK, RelativePosition.RIGHT],
+        this._orientation
+      );
 
       if (!diagonalPosition.isWithinBoundary()) {
         return false;
@@ -556,7 +657,10 @@ export default class MoveContext
     }
 
     // Check final step separately
-    const diagonalPosition = currentPosition.back.right;
+    const diagonalPosition = currentPosition.apply(
+      [RelativePosition.BACK, RelativePosition.RIGHT],
+      this._orientation
+    );
 
     if (!diagonalPosition.isWithinBoundary()) {
       return false;
@@ -579,7 +683,10 @@ export default class MoveContext
     let currentPosition = this._piecePosition;
 
     while (stepCount > 1) {
-      const diagonalPosition = currentPosition.back.left;
+      const diagonalPosition = currentPosition.apply(
+        [RelativePosition.BACK, RelativePosition.LEFT],
+        this._orientation
+      );
 
       if (!diagonalPosition.isWithinBoundary()) {
         return false;
@@ -596,7 +703,10 @@ export default class MoveContext
     }
 
     // Check final step separately
-    const diagonalPosition = currentPosition.back.left;
+    const diagonalPosition = currentPosition.apply(
+      [RelativePosition.BACK, RelativePosition.LEFT],
+      this._orientation
+    );
 
     if (!diagonalPosition.isWithinBoundary()) {
       return false;
@@ -619,7 +729,10 @@ export default class MoveContext
     let currentPosition = this._piecePosition;
 
     while (stepCount > 1) {
-      const diagonalPosition = currentPosition.front.left;
+      const diagonalPosition = currentPosition.apply(
+        [RelativePosition.FRONT, RelativePosition.LEFT],
+        this._orientation
+      );
 
       if (!diagonalPosition.isWithinBoundary()) {
         return false;
@@ -636,7 +749,10 @@ export default class MoveContext
     }
 
     // Check final step separately
-    const diagonalPosition = currentPosition.front.left;
+    const diagonalPosition = currentPosition.apply(
+      [RelativePosition.FRONT, RelativePosition.LEFT],
+      this._orientation
+    );
 
     if (!diagonalPosition.isWithinBoundary()) {
       return false;
@@ -652,7 +768,10 @@ export default class MoveContext
   }
 
   hasAllyInFront(): boolean | undefined {
-    const frontPosition = this._piecePosition.front;
+    const frontPosition = this._piecePosition.apply(
+      [RelativePosition.FRONT],
+      this._orientation
+    );
 
     if (!frontPosition.isWithinBoundary()) {
       return undefined;
@@ -668,7 +787,10 @@ export default class MoveContext
   }
 
   hasAllyBehind(): boolean | undefined {
-    const backPosition = this._piecePosition.back;
+    const backPosition = this._piecePosition.apply(
+      [RelativePosition.BACK],
+      this._orientation
+    );
 
     if (!backPosition.isWithinBoundary()) {
       return undefined;
@@ -684,7 +806,10 @@ export default class MoveContext
   }
 
   hasAllyOnLeft(): boolean | undefined {
-    const leftPosition = this._piecePosition.left;
+    const leftPosition = this._piecePosition.apply(
+      [RelativePosition.LEFT],
+      this._orientation
+    );
 
     if (!leftPosition.isWithinBoundary()) {
       return undefined;
@@ -700,7 +825,10 @@ export default class MoveContext
   }
 
   hasAllyOnRight(): boolean | undefined {
-    const rightPosition = this._piecePosition.back;
+    const rightPosition = this._piecePosition.apply(
+      [RelativePosition.RIGHT],
+      this._orientation
+    );
 
     if (!rightPosition.isWithinBoundary()) {
       return undefined;
@@ -716,7 +844,10 @@ export default class MoveContext
   }
 
   hasAllyFrontLeft(): boolean | undefined {
-    const frontLeftPosition = this._piecePosition.back;
+    const frontLeftPosition = this._piecePosition.apply(
+      [RelativePosition.FRONT, RelativePosition.LEFT],
+      this._orientation
+    );
 
     if (!frontLeftPosition.isWithinBoundary()) {
       return undefined;
@@ -735,7 +866,10 @@ export default class MoveContext
   }
 
   hasAllyFrontRight(): boolean | undefined {
-    const frontRightPosition = this._piecePosition.back;
+    const frontRightPosition = this._piecePosition.apply(
+      [RelativePosition.FRONT, RelativePosition.RIGHT],
+      this._orientation
+    );
 
     if (!frontRightPosition.isWithinBoundary()) {
       return undefined;
@@ -754,7 +888,10 @@ export default class MoveContext
   }
 
   hasAllyBackLeft(): boolean | undefined {
-    const backLeftPosition = this._piecePosition.back;
+    const backLeftPosition = this._piecePosition.apply(
+      [RelativePosition.BACK, RelativePosition.LEFT],
+      this._orientation
+    );
 
     if (!backLeftPosition.isWithinBoundary()) {
       return undefined;
@@ -770,7 +907,10 @@ export default class MoveContext
   }
 
   hasAllyBackRight(): boolean | undefined {
-    const backRightPosition = this._piecePosition.back;
+    const backRightPosition = this._piecePosition.apply(
+      [RelativePosition.BACK, RelativePosition.RIGHT],
+      this._orientation
+    );
 
     if (!backRightPosition.isWithinBoundary()) {
       return undefined;
