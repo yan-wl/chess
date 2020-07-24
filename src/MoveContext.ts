@@ -6,6 +6,7 @@ import ChessPiece from './ChessPiece';
 import RookMoveContext from './RookMoveContext';
 import BishopMoveContext from './BishopMoveContext';
 import QueenMoveContext from './QueenMoveContext';
+import KingMoveContext from './KingMoveContext';
 
 export default class MoveContext
   implements
@@ -13,7 +14,8 @@ export default class MoveContext
     KnightMoveContext,
     RookMoveContext,
     BishopMoveContext,
-    QueenMoveContext {
+    QueenMoveContext,
+    KingMoveContext {
   private _configuration: ChessConfiguration;
   private _piecePosition: ChessPosition;
   private _piece: ChessPiece;
@@ -534,5 +536,142 @@ export default class MoveContext
     }
 
     return true;
+  }
+
+  hasAllyInFront(): boolean | undefined {
+    const frontPosition = this._piecePosition.front;
+
+    if (!frontPosition.isWithinBoundary()) {
+      return undefined;
+    }
+
+    const frontPiece = this._configuration.getPieceAt(frontPosition);
+
+    if (frontPiece !== null && frontPiece.colour === this._piece.colour) {
+      return true;
+    }
+
+    return false;
+  }
+
+  hasAllyBehind(): boolean | undefined {
+    const backPosition = this._piecePosition.back;
+
+    if (!backPosition.isWithinBoundary()) {
+      return undefined;
+    }
+
+    const backPiece = this._configuration.getPieceAt(backPosition);
+
+    if (backPiece !== null && backPiece.colour === this._piece.colour) {
+      return true;
+    }
+
+    return false;
+  }
+
+  hasAllyOnLeft(): boolean | undefined {
+    const leftPosition = this._piecePosition.left;
+
+    if (!leftPosition.isWithinBoundary()) {
+      return undefined;
+    }
+
+    const leftPiece = this._configuration.getPieceAt(leftPosition);
+
+    if (leftPiece !== null && leftPiece.colour === this._piece.colour) {
+      return true;
+    }
+
+    return false;
+  }
+
+  hasAllyOnRight(): boolean | undefined {
+    const rightPosition = this._piecePosition.back;
+
+    if (!rightPosition.isWithinBoundary()) {
+      return undefined;
+    }
+
+    const rightPiece = this._configuration.getPieceAt(rightPosition);
+
+    if (rightPiece !== null && rightPiece.colour === this._piece.colour) {
+      return true;
+    }
+
+    return false;
+  }
+
+  hasAllyFrontLeft(): boolean | undefined {
+    const frontLeftPosition = this._piecePosition.back;
+
+    if (!frontLeftPosition.isWithinBoundary()) {
+      return undefined;
+    }
+
+    const frontLeftPiece = this._configuration.getPieceAt(frontLeftPosition);
+
+    if (
+      frontLeftPiece !== null &&
+      frontLeftPiece.colour === this._piece.colour
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
+  hasAllyFrontRight(): boolean | undefined {
+    const frontRightPosition = this._piecePosition.back;
+
+    if (!frontRightPosition.isWithinBoundary()) {
+      return undefined;
+    }
+
+    const frontRightPiece = this._configuration.getPieceAt(frontRightPosition);
+
+    if (
+      frontRightPiece !== null &&
+      frontRightPiece.colour === this._piece.colour
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
+  hasAllyBackLeft(): boolean | undefined {
+    const backLeftPosition = this._piecePosition.back;
+
+    if (!backLeftPosition.isWithinBoundary()) {
+      return undefined;
+    }
+
+    const backLeftPiece = this._configuration.getPieceAt(backLeftPosition);
+
+    if (backLeftPiece !== null && backLeftPiece.colour === this._piece.colour) {
+      return true;
+    }
+
+    return false;
+  }
+
+  hasAllyBackRight(): boolean | undefined {
+    const backRightPosition = this._piecePosition.back;
+
+    if (!backRightPosition.isWithinBoundary()) {
+      return undefined;
+    }
+
+    const backRightPiece = this._configuration.getPieceAt(backRightPosition);
+
+    if (
+      backRightPiece !== null &&
+      backRightPiece.colour === this._piece.colour
+    ) {
+      return true;
+    }
+
+    return false;
   }
 }

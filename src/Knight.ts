@@ -12,7 +12,7 @@ export default class Knight extends ChessPiece {
   getPossibleMoves(moveContext: KnightMoveContext): BoardMove[] {
     const possibleMoves: BoardMove[] = [];
 
-    // NOTE: Using === false is intentional.
+    // NOTE: Using === false is intentional to account for undefined.
 
     if (moveContext.hasAllyOnOne() === false) {
       possibleMoves.push([
