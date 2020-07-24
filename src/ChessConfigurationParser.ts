@@ -14,7 +14,7 @@ bObObObObObObObO
 wOwOwOwOwOwOwOwO
 wOwOwOwOwOwOwOwO
 wPwPwPwPwPwPwPwP
-wRwNwBwKwQwBwNwR
+wRwNwBwQwKwBwNwR
 `;
 
 function isValidRepresentation(representation: string): boolean {

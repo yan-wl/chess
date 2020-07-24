@@ -5,13 +5,15 @@ import KnightMoveContext from './KnightMoveContext';
 import ChessPiece from './ChessPiece';
 import RookMoveContext from './RookMoveContext';
 import BishopMoveContext from './BishopMoveContext';
+import QueenMoveContext from './QueenMoveContext';
 
 export default class MoveContext
   implements
     PawnMoveContext,
     KnightMoveContext,
     RookMoveContext,
-    BishopMoveContext {
+    BishopMoveContext,
+    QueenMoveContext {
   private _configuration: ChessConfiguration;
   private _piecePosition: ChessPosition;
   private _piece: ChessPiece;
