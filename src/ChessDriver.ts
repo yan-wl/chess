@@ -42,7 +42,8 @@ async function start() {
       );
       IO.write('\n');
     } catch (error) {
-      IO.write('Error encountered.\n');
+      IO.write(error.message);
+      IO.write('\n');
     }
   }
 }
