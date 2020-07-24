@@ -12,33 +12,35 @@ export default class Pawn extends ChessPiece {
   getPossibleMoves(moveContext: PawnMoveContext): BoardMove[] {
     const possibleMoves: BoardMove[] = [];
 
-    if (!moveContext.hasPieceInFrontOfPawn()) {
+    // NOTE: Using === false is intentional to account for undefined.
+
+    if (moveContext.hasPieceInFront() === false) {
       possibleMoves.push([PrimitiveMove.UP]);
     }
 
-    // if (
-    //   moveContext.pawnHasNotMoved() &&
-    //   !moveContext.hasPieceInFrontOfPawn() &&
-    //   !moveContext.hasPieceTwoSquaresInFrontOfPawn()
-    // ) {
-    //   possibleMoves.push([PrimitiveMove.UP, PrimitiveMove.UP]);
-    // }
+    if (
+      moveContext.pawnHasNotMoved() &&
+      moveContext.hasPieceInFront() === false &&
+      moveContext.hasPieceTwoSquaresInFront() === false
+    ) {
+      possibleMoves.push([PrimitiveMove.UP, PrimitiveMove.UP]);
+    }
 
-    // if (moveContext.leftEnPassantIsAllowed()) {
-    //   possibleMoves.push([PrimitiveMove.UP, PrimitiveMove.LEFT]);
-    // }
+    if (moveContext.leftEnPassantIsAllowed()) {
+      possibleMoves.push([PrimitiveMove.UP, PrimitiveMove.LEFT]);
+    }
 
-    // if (moveContext.rightEnPassantIsAllowed()) {
-    //   possibleMoves.push([PrimitiveMove.UP, PrimitiveMove.RIGHT]);
-    // }
+    if (moveContext.rightEnPassantIsAllowed()) {
+      possibleMoves.push([PrimitiveMove.UP, PrimitiveMove.RIGHT]);
+    }
 
-    // if (moveContext.hasEnemyOnDiagonalLeft()) {
-    //   possibleMoves.push([PrimitiveMove.UP, PrimitiveMove.LEFT]);
-    // }
+    if (moveContext.hasEnemyFrontLeft()) {
+      possibleMoves.push([PrimitiveMove.UP, PrimitiveMove.LEFT]);
+    }
 
-    // if (moveContext.hasEnemyOnDiagonalRight()) {
-    //   possibleMoves.push([PrimitiveMove.UP, PrimitiveMove.RIGHT]);
-    // }
+    if (moveContext.hasEnemyFrontRight()) {
+      possibleMoves.push([PrimitiveMove.UP, PrimitiveMove.RIGHT]);
+    }
 
     return possibleMoves;
   }

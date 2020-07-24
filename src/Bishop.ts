@@ -12,7 +12,7 @@ export default class Bishop extends ChessPiece {
   getPossibleMoves(moveContext: BishopMoveContext): BoardMove[] {
     const possibleMoves: BoardMove[] = [];
 
-    for (let i = 1; i < 9; i++) {
+    for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenNorthEastDiagonal(i)) {
         possibleMoves.push(
           // NOTE: fill(null) is necessary as mapping is not allowed on empty slots
@@ -29,7 +29,7 @@ export default class Bishop extends ChessPiece {
       }
     }
 
-    for (let i = 1; i < 9; i++) {
+    for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenSouthEastDiagonal(i)) {
         possibleMoves.push(
           Array(i * 2)
@@ -45,7 +45,7 @@ export default class Bishop extends ChessPiece {
       }
     }
 
-    for (let i = 1; i < 9; i++) {
+    for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenSouthWestDiagonal(i)) {
         possibleMoves.push(
           Array(i * 2)
@@ -61,7 +61,7 @@ export default class Bishop extends ChessPiece {
       }
     }
 
-    for (let i = 1; i < 9; i++) {
+    for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenNorthWestDiagonal(i)) {
         possibleMoves.push(
           Array(i * 2)

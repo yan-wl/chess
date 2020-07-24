@@ -1,12 +1,15 @@
 import ChessConfiguration from './ChessConfiguration';
 import ChessMove from './ChessMove';
 import MoveContext from './MoveContext';
+import MoveHistory from './MoveHistory';
 
 export default class ChessBoard {
   private _configurations: ChessConfiguration[];
+  private _moveHistory: MoveHistory;
 
   constructor(initConfig: ChessConfiguration) {
     this._configurations = [initConfig];
+    this._moveHistory = new MoveHistory();
   }
 
   get currentConfiguration(): ChessConfiguration {
@@ -23,7 +26,8 @@ export default class ChessBoard {
     const moveContext = new MoveContext(
       this.currentConfiguration,
       chessMove.source,
-      movingPiece
+      movingPiece,
+      this._moveHistory
     );
 
     const possibleMoves = movingPiece.getPossibleMoves(moveContext);
@@ -48,6 +52,10 @@ export default class ChessBoard {
         chessMove.destination
       );
       this._configurations.push(newConfig);
+      this._moveHistory.archive({
+        piece: movingPiece,
+        move: chessMove
+      });
     } else {
       throw Error('Invalid move.');
     }

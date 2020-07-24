@@ -7,6 +7,8 @@ import RookMoveContext from './RookMoveContext';
 import BishopMoveContext from './BishopMoveContext';
 import QueenMoveContext from './QueenMoveContext';
 import KingMoveContext from './KingMoveContext';
+import MoveHistory from './MoveHistory';
+import Pawn from './Pawn';
 
 export default class MoveContext
   implements
@@ -19,43 +21,154 @@ export default class MoveContext
   private _configuration: ChessConfiguration;
   private _piecePosition: ChessPosition;
   private _piece: ChessPiece;
+  private _history: MoveHistory;
 
   constructor(
     configuration: ChessConfiguration,
     piecePosition: ChessPosition,
-    piece: ChessPiece
+    piece: ChessPiece,
+    history: MoveHistory
   ) {
     this._configuration = configuration;
     this._piecePosition = piecePosition;
     this._piece = piece;
+    this._history = history;
   }
 
   pawnHasNotMoved(): boolean {
-    throw new Error('Method not implemented.');
+    const records = this._history.filter(
+      (record) => record.piece === this._piece
+    );
+
+    return records.size === 0;
   }
 
-  hasPieceInFrontOfPawn(): boolean {
-    return this._configuration.isOccupied(this._piecePosition.front);
+  hasPieceInFront(): boolean | undefined {
+    const frontPosition = this._piecePosition.front;
+
+    if (!frontPosition.isWithinBoundary()) {
+      return undefined;
+    }
+
+    const frontPiece = this._configuration.getPieceAt(frontPosition);
+
+    return frontPiece !== null;
   }
 
-  hasPieceTwoSquaresInFrontOfPawn(): boolean {
-    throw new Error('Method not implemented.');
+  hasPieceTwoSquaresInFront(): boolean | undefined {
+    const frontPosition = this._piecePosition.front.front;
+
+    if (!frontPosition.isWithinBoundary()) {
+      return undefined;
+    }
+
+    const frontPiece = this._configuration.getPieceAt(frontPosition);
+
+    return frontPiece !== null;
   }
 
   leftEnPassantIsAllowed(): boolean {
-    throw new Error('Method not implemented.');
+    const frontLeftPosition = this._piecePosition.front.left;
+
+    if (!frontLeftPosition.isWithinBoundary()) {
+      return false;
+    }
+
+    const frontLeftPiece = this._configuration.getPieceAt(frontLeftPosition);
+
+    if (frontLeftPiece !== null) {
+      return false;
+    }
+
+    const { latestRecord } = this._history;
+
+    if (latestRecord === undefined) {
+      return false;
+    }
+
+    const latestMove = latestRecord.move;
+    const latestPiece = latestRecord.piece;
+
+    if (
+      latestMove.source !== this._piecePosition.front.front.left ||
+      latestMove.destination !== this._piecePosition.left ||
+      !(latestPiece instanceof Pawn)
+    ) {
+      return false;
+    }
+
+    return true;
   }
 
   rightEnPassantIsAllowed(): boolean {
-    throw new Error('Method not implemented.');
+    const frontRightPosition = this._piecePosition.front.right;
+
+    if (!frontRightPosition.isWithinBoundary()) {
+      return false;
+    }
+
+    const frontRightPiece = this._configuration.getPieceAt(frontRightPosition);
+
+    if (frontRightPiece !== null) {
+      return false;
+    }
+
+    const { latestRecord } = this._history;
+
+    if (latestRecord === undefined) {
+      return false;
+    }
+
+    const latestMove = latestRecord.move;
+    const latestPiece = latestRecord.piece;
+
+    if (
+      latestMove.source !== this._piecePosition.front.front.right ||
+      latestMove.destination !== this._piecePosition.right ||
+      !(latestPiece instanceof Pawn)
+    ) {
+      return false;
+    }
+
+    return true;
   }
 
-  hasEnemyOnDiagonalLeft(): boolean {
-    throw new Error('Method not implemented.');
+  hasEnemyFrontLeft(): boolean {
+    const frontLeftPosition = this._piecePosition.front.left;
+
+    if (!frontLeftPosition.isWithinBoundary()) {
+      return false;
+    }
+
+    const frontLeftPiece = this._configuration.getPieceAt(frontLeftPosition);
+
+    if (
+      frontLeftPiece === null ||
+      frontLeftPiece.colour === this._piece.colour
+    ) {
+      return false;
+    }
+
+    return true;
   }
 
-  hasEnemyOnDiagonalRight(): boolean {
-    throw new Error('Method not implemented.');
+  hasEnemyFrontRight(): boolean {
+    const frontRightPosition = this._piecePosition.front.right;
+
+    if (!frontRightPosition.isWithinBoundary()) {
+      return false;
+    }
+
+    const frontRightPiece = this._configuration.getPieceAt(frontRightPosition);
+
+    if (
+      frontRightPiece === null ||
+      frontRightPiece.colour === this._piece.colour
+    ) {
+      return false;
+    }
+
+    return true;
   }
 
   hasAllyOnOne(): boolean | undefined {

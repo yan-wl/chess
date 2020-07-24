@@ -16,12 +16,6 @@ export default class ChessConfiguration {
     return this._positionMap;
   }
 
-  isOccupied(position: ChessPosition): boolean {
-    const piece = this.getPieceAt(position);
-
-    return piece !== null;
-  }
-
   /**
    * To retrieve the chess piece placed at any position
    *
