@@ -3,6 +3,7 @@ import ChessPiece from './ChessPiece';
 import { MoveEffect } from './MoveEffect';
 import { RelativePosition } from './RelativePosition';
 import { Orientation } from './Orientation';
+import ChessMove from './ChessMove';
 
 export default class ChessConfiguration {
   private _positionMap: Map<ChessPosition, ChessPiece | null>;
@@ -39,33 +40,41 @@ export default class ChessConfiguration {
    * @param destination position that piece is being moved to
    */
   movePiece(
-    source: ChessPosition,
-    destination: ChessPosition,
+    chessMove: ChessMove,
     effect: MoveEffect,
     orientation: Orientation
   ): ChessConfiguration {
-    if (!source.isWithinBoundary() || !destination.isWithinBoundary()) {
+    if (
+      !chessMove.source.isWithinBoundary() ||
+      !chessMove.destination.isWithinBoundary()
+    ) {
       throw Error('Invalid move request.');
     }
 
-    const sourcePiece = this.getPieceAt(source);
+    const sourcePiece = this.getPieceAt(chessMove.source);
 
     const newMap = new Map(this._positionMap);
 
     switch (effect) {
       case MoveEffect.REGULAR:
-        newMap.set(destination, sourcePiece);
-        newMap.set(source, null);
+        newMap.set(chessMove.destination, sourcePiece);
+        newMap.set(chessMove.source, null);
         break;
       case MoveEffect.EN_PASSANT:
-        newMap.set(destination, sourcePiece);
-        newMap.set(source, null);
+        newMap.set(chessMove.destination, sourcePiece);
+        newMap.set(chessMove.source, null);
         newMap.set(
-          destination.apply([RelativePosition.BACK], orientation),
+          chessMove.destination.apply([RelativePosition.BACK], orientation),
           null
         );
         break;
       case MoveEffect.PROMOTION:
+        // NOTE: This does not check if the promotion piece is of same colour
+        if (chessMove.promotionPiece === null) {
+          throw Error('Missing promotion piece.');
+        }
+        newMap.set(chessMove.source, null);
+        newMap.set(chessMove.destination, chessMove.promotionPiece);
         break;
       case MoveEffect.CASTLE:
         break;

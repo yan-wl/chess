@@ -63,8 +63,7 @@ export default class ChessBoard {
 
     if (allowedMove !== undefined) {
       const newConfig = this.currentConfiguration.movePiece(
-        chessMove.source,
-        chessMove.destination,
+        chessMove,
         allowedMove.effect,
         this._orientation
       );

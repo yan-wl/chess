@@ -30,4 +30,9 @@ export default interface PawnMoveContext {
    * @returns true only if front right position is valid and has an enemy
    */
   hasEnemyFrontRight(): boolean;
+
+  /**
+   * To check if the pawn is on the seventh rank
+   */
+  isOnSeventhRank(): boolean;
 }

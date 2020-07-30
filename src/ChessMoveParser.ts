@@ -1,8 +1,9 @@
 import ChessMove from './ChessMove';
 import ChessPositionParser from './ChessPositionParser';
+import ChessPieceParser from './ChessPieceParser';
 
 function isValidRepresentation(representation: string): boolean {
-  const re = /^\s*[a-h][1-8]->[a-h][1-8]\s*$/i;
+  const re = /^[a-h][1-8]->[a-h][1-8]([wb][qrnb])?$/i;
   return re.test(representation);
 }
 
@@ -15,14 +16,30 @@ function isValidRepresentation(representation: string): boolean {
  * @returns the corresponding chess move if valid, else throws an error
  */
 function parse(representation: string): ChessMove {
-  if (!isValidRepresentation(representation)) {
+  const repr = representation.trim();
+
+  if (!isValidRepresentation(repr)) {
     throw Error('Invalid chess move.');
   }
-  const [source, destination] = representation.trim().split('->');
-  return new ChessMove(
-    ChessPositionParser.parse(source),
-    ChessPositionParser.parse(destination)
-  );
+
+  if (repr.length === 8) {
+    const promotion = repr.substring(6, 8);
+    const [source, destination] = repr.substring(0, 6).split('->');
+    console.log(source);
+    console.log(destination);
+    return new ChessMove(
+      ChessPositionParser.parse(source),
+      ChessPositionParser.parse(destination),
+      ChessPieceParser.parse(promotion)
+    );
+  } else {
+    const [source, destination] = repr.split('->');
+    return new ChessMove(
+      ChessPositionParser.parse(source),
+      ChessPositionParser.parse(destination),
+      null
+    );
+  }
 }
 
 /**

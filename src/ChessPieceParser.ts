@@ -73,7 +73,7 @@ function serialize(piece: ChessPiece | null): string {
   } else if (piece instanceof Bishop) {
     type = 'B';
   } else if (piece instanceof Knight) {
-    type = 'K';
+    type = 'N';
   } else if (piece instanceof Pawn) {
     type = 'P';
   } else {

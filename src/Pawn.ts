@@ -18,7 +18,9 @@ export default class Pawn extends ChessPiece {
     if (moveContext.hasPieceInFront() === false) {
       possibleMoves.push({
         steps: [RelativePosition.FRONT],
-        effect: MoveEffect.REGULAR
+        effect: moveContext.isOnSeventhRank()
+          ? MoveEffect.PROMOTION
+          : MoveEffect.REGULAR
       });
     }
 
@@ -50,14 +52,18 @@ export default class Pawn extends ChessPiece {
     if (moveContext.hasEnemyFrontLeft()) {
       possibleMoves.push({
         steps: [RelativePosition.FRONT, RelativePosition.LEFT],
-        effect: MoveEffect.REGULAR
+        effect: moveContext.isOnSeventhRank()
+          ? MoveEffect.PROMOTION
+          : MoveEffect.REGULAR
       });
     }
 
     if (moveContext.hasEnemyFrontRight()) {
       possibleMoves.push({
         steps: [RelativePosition.FRONT, RelativePosition.RIGHT],
-        effect: MoveEffect.REGULAR
+        effect: moveContext.isOnSeventhRank()
+          ? MoveEffect.PROMOTION
+          : MoveEffect.REGULAR
       });
     }
 

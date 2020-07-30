@@ -196,8 +196,10 @@ export default class ChessPosition {
     return ChessPosition.at(column, row);
   }
 
-  // This returns a unique string for positions with different column or row,
-  // and returns the same string for different instances with same column and row.
+  /**
+   * a unique string for positions with different column or row,
+   * and the same string for different instances with same column and row
+   */
   get hash(): string {
     return `${this._column}${this._row}`;
   }

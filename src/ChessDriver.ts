@@ -2,16 +2,17 @@ import * as readline from 'readline';
 import ChessBoard from './ChessBoard';
 import ChessMoveParser from './ChessMoveParser';
 import ChessConfigurationParser from './ChessConfigurationParser';
-import { REGULAR_CONFIG } from './ConfigProvider';
+import { REGULAR_CONFIG, PROMOTION_TEST } from './ConfigProvider';
 
 const IO = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
-const chessBoard = new ChessBoard(
-  ChessConfigurationParser.parse(REGULAR_CONFIG)
-);
+// const initConfig = REGULAR_CONFIG;
+const initConfig = PROMOTION_TEST;
+
+const chessBoard = new ChessBoard(ChessConfigurationParser.parse(initConfig));
 
 IO.write('Starting position:\n');
 IO.write(ChessConfigurationParser.serialize(chessBoard.currentConfiguration));
@@ -41,6 +42,7 @@ async function start() {
       );
       IO.write('\n');
     } catch (error) {
+      IO.write(error.stack);
       IO.write(error.message);
       IO.write('\n');
     }

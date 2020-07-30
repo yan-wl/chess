@@ -40,6 +40,20 @@ export default class MoveContext
     this._orientation = orientation;
   }
 
+  isOnSeventhRank(): boolean {
+    return (
+      this._piecePosition
+        .apply([RelativePosition.FRONT], this._orientation)
+        .isWithinBoundary() &&
+      !this._piecePosition
+        .apply(
+          [RelativePosition.FRONT, RelativePosition.FRONT],
+          this._orientation
+        )
+        .isWithinBoundary()
+    );
+  }
+
   pawnHasNotMoved(): boolean {
     const records = this._history.filter(
       (record) => record.piece === this._piece
