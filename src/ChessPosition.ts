@@ -1,6 +1,6 @@
 import { ChessPositionRow } from './ChessPositionRow';
 import { ChessPositionColumn } from './ChessPositionColumn';
-import { Move } from './Move';
+import { Steps } from './Move';
 import { RelativePosition } from './RelativePosition';
 import { Orientation } from './Orientation';
 
@@ -202,7 +202,7 @@ export default class ChessPosition {
     return `${this._column}${this._row}`;
   }
 
-  apply(steps: Move, orientation: Orientation): ChessPosition {
+  apply(steps: Steps, orientation: Orientation): ChessPosition {
     if (!this.isWithinBoundary()) {
       return this;
     }

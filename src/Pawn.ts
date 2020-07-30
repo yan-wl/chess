@@ -3,6 +3,7 @@ import { Move } from './Move';
 import PawnMoveContext from './PawnMoveContext';
 import { RelativePosition } from './RelativePosition';
 import { PieceColour } from './PieceColour';
+import { MoveEffect } from './MoveEffect';
 
 export default class Pawn extends ChessPiece {
   constructor(colour: PieceColour) {
@@ -15,7 +16,10 @@ export default class Pawn extends ChessPiece {
     // NOTE: Using === false is intentional to account for undefined.
 
     if (moveContext.hasPieceInFront() === false) {
-      possibleMoves.push([RelativePosition.FRONT]);
+      possibleMoves.push({
+        steps: [RelativePosition.FRONT],
+        effect: MoveEffect.REGULAR
+      });
     }
 
     if (
@@ -23,23 +27,38 @@ export default class Pawn extends ChessPiece {
       moveContext.hasPieceInFront() === false &&
       moveContext.hasPieceTwoSquaresInFront() === false
     ) {
-      possibleMoves.push([RelativePosition.FRONT, RelativePosition.FRONT]);
+      possibleMoves.push({
+        steps: [RelativePosition.FRONT, RelativePosition.FRONT],
+        effect: MoveEffect.REGULAR
+      });
     }
 
     if (moveContext.leftEnPassantIsAllowed()) {
-      possibleMoves.push([RelativePosition.FRONT, RelativePosition.LEFT]);
+      possibleMoves.push({
+        steps: [RelativePosition.FRONT, RelativePosition.LEFT],
+        effect: MoveEffect.EN_PASSANT
+      });
     }
 
     if (moveContext.rightEnPassantIsAllowed()) {
-      possibleMoves.push([RelativePosition.FRONT, RelativePosition.RIGHT]);
+      possibleMoves.push({
+        steps: [RelativePosition.FRONT, RelativePosition.RIGHT],
+        effect: MoveEffect.EN_PASSANT
+      });
     }
 
     if (moveContext.hasEnemyFrontLeft()) {
-      possibleMoves.push([RelativePosition.FRONT, RelativePosition.LEFT]);
+      possibleMoves.push({
+        steps: [RelativePosition.FRONT, RelativePosition.LEFT],
+        effect: MoveEffect.REGULAR
+      });
     }
 
     if (moveContext.hasEnemyFrontRight()) {
-      possibleMoves.push([RelativePosition.FRONT, RelativePosition.RIGHT]);
+      possibleMoves.push({
+        steps: [RelativePosition.FRONT, RelativePosition.RIGHT],
+        effect: MoveEffect.REGULAR
+      });
     }
 
     return possibleMoves;

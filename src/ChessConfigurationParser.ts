@@ -6,17 +6,6 @@ import ChessPositionRowParser from './ChessPositionRowParser';
 import ChessPiece from './ChessPiece';
 import ChessPositionParser from './ChessPositionParser';
 
-export const REGULAR_CONFIG = `
-bRbNbBbQbKbBbNbR
-bPbPbPbPbPbPbPbP
-bObObObObObObObO
-bObObObObObObObO
-wOwOwOwOwOwOwOwO
-wOwOwOwOwOwOwOwO
-wPwPwPwPwPwPwPwP
-wRwNwBwQwKwBwNwR
-`;
-
 function isValidRepresentation(representation: string): boolean {
   const re = /^\s*(([wb][kqrbnpo]){8}\s+){7}([wb][kqrbnpo]){8}\s*$/i;
   return re.test(representation);

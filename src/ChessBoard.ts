@@ -31,7 +31,7 @@ export default class ChessBoard {
     const movingPiece = this.currentConfiguration.getPieceAt(chessMove.source);
 
     if (movingPiece === null) {
-      return;
+      throw Error('Invalid move.');
     }
 
     const moveContext = new MoveContext(
@@ -47,8 +47,11 @@ export default class ChessBoard {
     /*
       This is potentially too inefficient.
     */
-    const allowed = possibleMoves.some((move) => {
-      const resultingPosition = chessMove.source.apply(move, this._orientation);
+    const allowedMove = possibleMoves.find((move) => {
+      const resultingPosition = chessMove.source.apply(
+        move.steps,
+        this._orientation
+      );
 
       return (
         resultingPosition.isWithinBoundary() &&
@@ -58,10 +61,12 @@ export default class ChessBoard {
 
     // TODO: Add legality checks
 
-    if (allowed) {
-      const newConfig = this.currentConfiguration.move(
+    if (allowedMove !== undefined) {
+      const newConfig = this.currentConfiguration.movePiece(
         chessMove.source,
-        chessMove.destination
+        chessMove.destination,
+        allowedMove.effect,
+        this._orientation
       );
       this._configurations.push(newConfig);
       this._moveHistory.archive({

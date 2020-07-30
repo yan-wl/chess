@@ -3,6 +3,7 @@ import RookMoveContext from './RookMoveContext';
 import { Move } from './Move';
 import { PieceColour } from './PieceColour';
 import { RelativePosition } from './RelativePosition';
+import { MoveEffect } from './MoveEffect';
 
 export default class Rook extends ChessPiece {
   constructor(colour: PieceColour) {
@@ -14,25 +15,37 @@ export default class Rook extends ChessPiece {
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenFrontLane(i)) {
-        possibleMoves.push(Array(i).fill(RelativePosition.FRONT));
+        possibleMoves.push({
+          steps: Array(i).fill(RelativePosition.FRONT),
+          effect: MoveEffect.REGULAR
+        });
       }
     }
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenBackLane(i)) {
-        possibleMoves.push(Array(i).fill(RelativePosition.BACK));
+        possibleMoves.push({
+          steps: Array(i).fill(RelativePosition.BACK),
+          effect: MoveEffect.REGULAR
+        });
       }
     }
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenLeftLane(i)) {
-        possibleMoves.push(Array(i).fill(RelativePosition.LEFT));
+        possibleMoves.push({
+          steps: Array(i).fill(RelativePosition.LEFT),
+          effect: MoveEffect.REGULAR
+        });
       }
     }
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenRightLane(i)) {
-        possibleMoves.push(Array(i).fill(RelativePosition.RIGHT));
+        possibleMoves.push({
+          steps: Array(i).fill(RelativePosition.RIGHT),
+          effect: MoveEffect.REGULAR
+        });
       }
     }
 

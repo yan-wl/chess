@@ -1,11 +1,10 @@
 import ChessPosition from './ChessPosition';
 import ChessPiece from './ChessPiece';
+import { MoveEffect } from './MoveEffect';
+import { RelativePosition } from './RelativePosition';
+import { Orientation } from './Orientation';
 
 export default class ChessConfiguration {
-  /*
-    NOT TO BE CONFUSED WITH LIGHT AND DARK SQUARES!
-    Black squares hold black pieces. White squares hold white pieces.
-  */
   private _positionMap: Map<ChessPosition, ChessPiece | null>;
 
   constructor(positionMap: Map<ChessPosition, ChessPiece | null>) {
@@ -33,7 +32,18 @@ export default class ChessConfiguration {
     return piece;
   }
 
-  move(source: ChessPosition, destination: ChessPosition): ChessConfiguration {
+  /**
+   * Move piece at source to destination
+   *
+   * @param source position of piece that is being moved
+   * @param destination position that piece is being moved to
+   */
+  movePiece(
+    source: ChessPosition,
+    destination: ChessPosition,
+    effect: MoveEffect,
+    orientation: Orientation
+  ): ChessConfiguration {
     if (!source.isWithinBoundary() || !destination.isWithinBoundary()) {
       throw Error('Invalid move request.');
     }
@@ -42,8 +52,24 @@ export default class ChessConfiguration {
 
     const newMap = new Map(this._positionMap);
 
-    newMap.set(destination, sourcePiece);
-    newMap.set(source, null);
+    switch (effect) {
+      case MoveEffect.REGULAR:
+        newMap.set(destination, sourcePiece);
+        newMap.set(source, null);
+        break;
+      case MoveEffect.EN_PASSANT:
+        newMap.set(destination, sourcePiece);
+        newMap.set(source, null);
+        newMap.set(
+          destination.apply([RelativePosition.BACK], orientation),
+          null
+        );
+        break;
+      case MoveEffect.PROMOTION:
+        break;
+      case MoveEffect.CASTLE:
+        break;
+    }
 
     return new ChessConfiguration(newMap);
   }

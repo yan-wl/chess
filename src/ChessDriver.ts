@@ -1,9 +1,8 @@
 import * as readline from 'readline';
 import ChessBoard from './ChessBoard';
 import ChessMoveParser from './ChessMoveParser';
-import ChessConfigurationParser, {
-  REGULAR_CONFIG
-} from './ChessConfigurationParser';
+import ChessConfigurationParser from './ChessConfigurationParser';
+import { REGULAR_CONFIG } from './ConfigProvider';
 
 const IO = readline.createInterface({
   input: process.stdin,
