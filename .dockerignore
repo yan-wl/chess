@@ -1,0 +1,8 @@
+node_modules
+npm-debug.log
+.vscode
+build
+.eslintrc.json
+.gitignore
+.prettierrc
+README.md
