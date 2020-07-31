@@ -41,7 +41,6 @@ async function start() {
       );
       IO.write('\n');
     } catch (error) {
-      IO.write(error.stack);
       IO.write(error.message);
       IO.write('\n');
     }
