@@ -76,7 +76,57 @@ export default class ChessConfiguration {
         newMap.set(chessMove.source, null);
         newMap.set(chessMove.destination, chessMove.promotionPiece);
         break;
-      case MoveEffect.CASTLE:
+      case MoveEffect.LEFT_CASTLE:
+        newMap.set(chessMove.destination, sourcePiece);
+        newMap.set(chessMove.source, null);
+
+        let leftMostPosition: ChessPosition = chessMove.source;
+
+        while (true) {
+          const leftPosition = leftMostPosition.apply(
+            [RelativePosition.LEFT],
+            orientation
+          );
+
+          if (!leftPosition.isWithinBoundary()) {
+            break;
+          }
+
+          leftMostPosition = leftPosition;
+        }
+
+        newMap.set(
+          chessMove.source.apply([RelativePosition.LEFT], orientation),
+          this.getPieceAt(leftMostPosition)
+        );
+        newMap.set(leftMostPosition, null);
+
+        break;
+      case MoveEffect.RIGHT_CASTLE:
+        newMap.set(chessMove.destination, sourcePiece);
+        newMap.set(chessMove.source, null);
+
+        let rightMostPosition: ChessPosition = chessMove.source;
+
+        while (true) {
+          const rightPosition = rightMostPosition.apply(
+            [RelativePosition.RIGHT],
+            orientation
+          );
+
+          if (!rightPosition.isWithinBoundary()) {
+            break;
+          }
+
+          rightMostPosition = rightPosition;
+        }
+
+        newMap.set(
+          chessMove.source.apply([RelativePosition.RIGHT], orientation),
+          this.getPieceAt(rightMostPosition)
+        );
+        newMap.set(rightMostPosition, null);
+
         break;
     }
 

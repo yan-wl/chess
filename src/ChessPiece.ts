@@ -1,6 +1,7 @@
 import { Move } from './Move';
 import MoveContext from './MoveContext';
 import { PieceColour } from './PieceColour';
+import { PieceType } from './PieceType';
 
 export default abstract class ChessPiece {
   private _colour: PieceColour;
@@ -13,5 +14,6 @@ export default abstract class ChessPiece {
     return this._colour;
   }
 
+  abstract get type(): PieceType;
   abstract getPossibleMoves(moveContext: MoveContext): Move[];
 }

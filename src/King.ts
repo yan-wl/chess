@@ -4,10 +4,15 @@ import { Move } from './Move';
 import { PieceColour } from './PieceColour';
 import { RelativePosition } from './RelativePosition';
 import { MoveEffect } from './MoveEffect';
+import { PieceType } from './PieceType';
 
 export default class King extends ChessPiece {
   constructor(colour: PieceColour) {
     super(colour);
+  }
+
+  get type(): PieceType {
+    return PieceType.KING;
   }
 
   getPossibleMoves(moveContext: KingMoveContext): Move[] {
@@ -68,6 +73,20 @@ export default class King extends ChessPiece {
       possibleMoves.push({
         steps: [RelativePosition.BACK, RelativePosition.RIGHT],
         effect: MoveEffect.REGULAR
+      });
+    }
+
+    if (moveContext.leftCastleIsAllowed()) {
+      possibleMoves.push({
+        steps: [RelativePosition.LEFT, RelativePosition.LEFT],
+        effect: MoveEffect.LEFT_CASTLE
+      });
+    }
+
+    if (moveContext.rightCastleIsAllowed()) {
+      possibleMoves.push({
+        steps: [RelativePosition.RIGHT, RelativePosition.RIGHT],
+        effect: MoveEffect.RIGHT_CASTLE
       });
     }
 

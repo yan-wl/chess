@@ -2,5 +2,6 @@ export enum MoveEffect {
   REGULAR,
   EN_PASSANT,
   PROMOTION,
-  CASTLE
+  LEFT_CASTLE,
+  RIGHT_CASTLE
 }

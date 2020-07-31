@@ -19,3 +19,14 @@ wOwOwOwOwOwOwOwO
 wOwPwPwPwPwPwPwP
 wRwNwBwQwKwBwNwR
 `;
+
+export const CASTLE_TEST = `
+bRbObObObKbObObR
+bPwPbPbPbPbPbPbP
+bObObObObObObObO
+bObObObObObObObO
+wOwOwOwOwOwOwOwO
+wOwOwOwOwOwOwOwO
+wOwPwPwPwPwPwPwP
+wRwOwOwOwKwOwOwR
+`;

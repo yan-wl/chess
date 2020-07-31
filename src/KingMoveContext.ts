@@ -54,4 +54,7 @@ export default interface KingMoveContext {
    * @returns undefined if the relative position is out of bounds
    */
   hasAllyBackRight(): boolean | undefined;
+
+  leftCastleIsAllowed(): boolean;
+  rightCastleIsAllowed(): boolean;
 }

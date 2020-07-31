@@ -8,9 +8,10 @@ import BishopMoveContext from './BishopMoveContext';
 import QueenMoveContext from './QueenMoveContext';
 import KingMoveContext from './KingMoveContext';
 import MoveHistory from './MoveHistory';
-import Pawn from './Pawn';
 import { RelativePosition } from './RelativePosition';
 import { Orientation } from './Orientation';
+import { PieceType } from './PieceType';
+import { isUnderAttack } from './AttackTracker';
 
 export default class MoveContext
   implements
@@ -129,7 +130,7 @@ export default class MoveContext
         ) ||
       latestMove.destination !==
         this._piecePosition.apply([RelativePosition.LEFT], this._orientation) ||
-      !(latestPiece instanceof Pawn)
+      !(latestPiece.type === PieceType.PAWN)
     ) {
       return false;
     }
@@ -177,7 +178,7 @@ export default class MoveContext
           [RelativePosition.RIGHT],
           this._orientation
         ) ||
-      !(latestPiece instanceof Pawn)
+      !(latestPiece.type === PieceType.PAWN)
     ) {
       return false;
     }
@@ -940,5 +941,157 @@ export default class MoveContext
     }
 
     return false;
+  }
+
+  leftCastleIsAllowed(): boolean {
+    // Store all valid positions on the left
+    const leftPositions: ChessPosition[] = [];
+
+    let leftPosition = this._piecePosition.apply(
+      [RelativePosition.LEFT],
+      this._orientation
+    );
+
+    while (leftPosition.isWithinBoundary()) {
+      leftPositions.push(leftPosition);
+
+      leftPosition = leftPosition.apply(
+        [RelativePosition.LEFT],
+        this._orientation
+      );
+    }
+
+    // To castle, there must at least be 2 spaces to the left
+    if (leftPositions.length < 2) {
+      return false;
+    }
+
+    // Positions in between combo pieces should not hold a piece
+    for (let i = 0; i < leftPositions.length - 1; i++) {
+      const position = leftPositions[i];
+
+      if (this._configuration.getPieceAt(position) !== null) {
+        return false;
+      }
+    }
+
+    // Check if the positions travelled through are being attacked
+    const travellingPositions: ChessPosition[] = [this._piecePosition].concat(
+      leftPositions.slice(0, 2)
+    );
+
+    if (
+      travellingPositions.some((position) =>
+        isUnderAttack(
+          this._configuration,
+          this,
+          position,
+          this._piece.colour,
+          this._orientation
+        )
+      )
+    ) {
+      return false;
+    }
+
+    // Check if combo piece is a rook
+    const comboPiece = this._configuration.getPieceAt(
+      leftPositions[leftPositions.length - 1]
+    );
+
+    if (comboPiece === null) {
+      return false;
+    }
+
+    if (comboPiece.type !== PieceType.ROOK) {
+      return false;
+    }
+
+    // Check if combo pieces have moved
+    const records = this._history.filter(
+      (record) => record.piece === this._piece || record.piece === comboPiece
+    );
+
+    if (records.size !== 0) {
+      return false;
+    }
+
+    return true;
+  }
+
+  rightCastleIsAllowed(): boolean {
+    // Store all valid positions on the right
+    const rightPositions: ChessPosition[] = [];
+
+    let rightPosition = this._piecePosition.apply(
+      [RelativePosition.RIGHT],
+      this._orientation
+    );
+
+    while (rightPosition.isWithinBoundary()) {
+      rightPositions.push(rightPosition);
+
+      rightPosition = rightPosition.apply(
+        [RelativePosition.RIGHT],
+        this._orientation
+      );
+    }
+
+    // To castle, there must at least be 2 spaces to the right
+    if (rightPositions.length < 2) {
+      return false;
+    }
+
+    // Positions in between combo pieces should not hold a piece
+    for (let i = 0; i < rightPositions.length - 1; i++) {
+      const position = rightPositions[i];
+
+      if (this._configuration.getPieceAt(position) !== null) {
+        return false;
+      }
+    }
+
+    // Check if the positions travelled through are being attacked
+    const travellingPositions: ChessPosition[] = [this._piecePosition].concat(
+      rightPositions.slice(0, 2)
+    );
+
+    if (
+      travellingPositions.some((position) =>
+        isUnderAttack(
+          this._configuration,
+          this,
+          position,
+          this._piece.colour,
+          this._orientation
+        )
+      )
+    ) {
+      return false;
+    }
+
+    // Check if combo piece is a rook
+    const comboPiece = this._configuration.getPieceAt(
+      rightPositions[rightPositions.length - 1]
+    );
+
+    if (comboPiece === null) {
+      return false;
+    }
+
+    if (comboPiece.type !== PieceType.ROOK) {
+      return false;
+    }
+
+    // Check if combo pieces have moved
+    const records = this._history.filter(
+      (record) => record.piece === this._piece || record.piece === comboPiece
+    );
+
+    if (records.size !== 0) {
+      return false;
+    }
+
+    return true;
   }
 }

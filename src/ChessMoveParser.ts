@@ -25,8 +25,6 @@ function parse(representation: string): ChessMove {
   if (repr.length === 8) {
     const promotion = repr.substring(6, 8);
     const [source, destination] = repr.substring(0, 6).split('->');
-    console.log(source);
-    console.log(destination);
     return new ChessMove(
       ChessPositionParser.parse(source),
       ChessPositionParser.parse(destination),

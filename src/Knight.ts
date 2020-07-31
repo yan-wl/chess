@@ -4,10 +4,15 @@ import { Move } from './Move';
 import { PieceColour } from './PieceColour';
 import { RelativePosition } from './RelativePosition';
 import { MoveEffect } from './MoveEffect';
+import { PieceType } from './PieceType';
 
 export default class Knight extends ChessPiece {
   constructor(colour: PieceColour) {
     super(colour);
+  }
+
+  get type(): PieceType {
+    return PieceType.KNIGHT;
   }
 
   getPossibleMoves(moveContext: KnightMoveContext): Move[] {

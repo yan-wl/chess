@@ -2,15 +2,14 @@ import * as readline from 'readline';
 import ChessBoard from './ChessBoard';
 import ChessMoveParser from './ChessMoveParser';
 import ChessConfigurationParser from './ChessConfigurationParser';
-import { REGULAR_CONFIG, PROMOTION_TEST } from './ConfigProvider';
+import { REGULAR_CONFIG } from './ConfigProvider';
 
 const IO = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
-// const initConfig = REGULAR_CONFIG;
-const initConfig = PROMOTION_TEST;
+const initConfig = REGULAR_CONFIG;
 
 const chessBoard = new ChessBoard(ChessConfigurationParser.parse(initConfig));
 
