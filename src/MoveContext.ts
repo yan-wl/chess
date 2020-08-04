@@ -75,7 +75,7 @@ export default class MoveContext
 
     const frontPiece = this._configuration.getPieceAt(frontPosition);
 
-    return frontPiece !== null;
+    return frontPiece.type !== PieceType.NULL;
   }
 
   hasPieceTwoSquaresInFront(): boolean | undefined {
@@ -90,7 +90,7 @@ export default class MoveContext
 
     const frontPiece = this._configuration.getPieceAt(frontPosition);
 
-    return frontPiece !== null;
+    return frontPiece.type !== PieceType.NULL;
   }
 
   leftEnPassantIsAllowed(): boolean {
@@ -105,7 +105,7 @@ export default class MoveContext
 
     const frontLeftPiece = this._configuration.getPieceAt(frontLeftPosition);
 
-    if (frontLeftPiece !== null) {
+    if (frontLeftPiece.type !== PieceType.NULL) {
       return false;
     }
 
@@ -150,7 +150,7 @@ export default class MoveContext
 
     const frontRightPiece = this._configuration.getPieceAt(frontRightPosition);
 
-    if (frontRightPiece !== null) {
+    if (frontRightPiece.type !== PieceType.NULL) {
       return false;
     }
 
@@ -199,7 +199,7 @@ export default class MoveContext
     const frontLeftPiece = this._configuration.getPieceAt(frontLeftPosition);
 
     if (
-      frontLeftPiece === null ||
+      frontLeftPiece.type !== PieceType.NULL ||
       frontLeftPiece.colour === this._piece.colour
     ) {
       return false;
@@ -221,7 +221,7 @@ export default class MoveContext
     const frontRightPiece = this._configuration.getPieceAt(frontRightPosition);
 
     if (
-      frontRightPiece === null ||
+      frontRightPiece.type === PieceType.NULL ||
       frontRightPiece.colour === this._piece.colour
     ) {
       return false;
@@ -242,7 +242,7 @@ export default class MoveContext
 
     const destinationPiece = this._configuration.getPieceAt(destination);
 
-    if (destinationPiece === null) {
+    if (destinationPiece.type === PieceType.NULL) {
       return false;
     }
 
@@ -265,7 +265,7 @@ export default class MoveContext
 
     const destinationPiece = this._configuration.getPieceAt(destination);
 
-    if (destinationPiece === null) {
+    if (destinationPiece.type === PieceType.NULL) {
       return false;
     }
 
@@ -288,7 +288,7 @@ export default class MoveContext
 
     const destinationPiece = this._configuration.getPieceAt(destination);
 
-    if (destinationPiece === null) {
+    if (destinationPiece.type === PieceType.NULL) {
       return false;
     }
 
@@ -311,7 +311,7 @@ export default class MoveContext
 
     const destinationPiece = this._configuration.getPieceAt(destination);
 
-    if (destinationPiece === null) {
+    if (destinationPiece.type === PieceType.NULL) {
       return false;
     }
 
@@ -334,7 +334,7 @@ export default class MoveContext
 
     const destinationPiece = this._configuration.getPieceAt(destination);
 
-    if (destinationPiece === null) {
+    if (destinationPiece.type === PieceType.NULL) {
       return false;
     }
 
@@ -357,7 +357,7 @@ export default class MoveContext
 
     const destinationPiece = this._configuration.getPieceAt(destination);
 
-    if (destinationPiece === null) {
+    if (destinationPiece.type === PieceType.NULL) {
       return false;
     }
 
@@ -380,7 +380,7 @@ export default class MoveContext
 
     const destinationPiece = this._configuration.getPieceAt(destination);
 
-    if (destinationPiece === null) {
+    if (destinationPiece.type === PieceType.NULL) {
       return false;
     }
 
@@ -403,7 +403,7 @@ export default class MoveContext
 
     const destinationPiece = this._configuration.getPieceAt(destination);
 
-    if (destinationPiece === null) {
+    if (destinationPiece.type === PieceType.NULL) {
       return false;
     }
 
@@ -433,7 +433,7 @@ export default class MoveContext
 
       const frontPiece = this._configuration.getPieceAt(frontPosition);
 
-      if (frontPiece !== null) {
+      if (frontPiece.type !== PieceType.NULL) {
         return false;
       }
 
@@ -453,7 +453,10 @@ export default class MoveContext
 
     const frontPiece = this._configuration.getPieceAt(frontPosition);
 
-    if (frontPiece !== null && frontPiece.colour === this._piece.colour) {
+    if (
+      frontPiece.type !== PieceType.NULL &&
+      frontPiece.colour === this._piece.colour
+    ) {
       return false;
     }
 
@@ -479,7 +482,7 @@ export default class MoveContext
 
       const backPiece = this._configuration.getPieceAt(backPosition);
 
-      if (backPiece !== null) {
+      if (backPiece.type !== PieceType.NULL) {
         return false;
       }
 
@@ -499,7 +502,10 @@ export default class MoveContext
 
     const backPiece = this._configuration.getPieceAt(backPosition);
 
-    if (backPiece !== null && backPiece.colour === this._piece.colour) {
+    if (
+      backPiece.type !== PieceType.NULL &&
+      backPiece.colour === this._piece.colour
+    ) {
       return false;
     }
 
@@ -525,7 +531,7 @@ export default class MoveContext
 
       const leftPiece = this._configuration.getPieceAt(leftPosition);
 
-      if (leftPiece !== null) {
+      if (leftPiece.type !== PieceType.NULL) {
         return false;
       }
 
@@ -545,7 +551,10 @@ export default class MoveContext
 
     const leftPiece = this._configuration.getPieceAt(leftPosition);
 
-    if (leftPiece !== null && leftPiece.colour === this._piece.colour) {
+    if (
+      leftPiece.type !== PieceType.NULL &&
+      leftPiece.colour === this._piece.colour
+    ) {
       return false;
     }
 
@@ -571,7 +580,7 @@ export default class MoveContext
 
       const rightPiece = this._configuration.getPieceAt(rightPosition);
 
-      if (rightPiece !== null) {
+      if (rightPiece.type !== PieceType.NULL) {
         return false;
       }
 
@@ -591,7 +600,10 @@ export default class MoveContext
 
     const rightPiece = this._configuration.getPieceAt(rightPosition);
 
-    if (rightPiece !== null && rightPiece.colour === this._piece.colour) {
+    if (
+      rightPiece.type !== PieceType.NULL &&
+      rightPiece.colour === this._piece.colour
+    ) {
       return false;
     }
 
@@ -617,7 +629,7 @@ export default class MoveContext
 
       const diagonalPiece = this._configuration.getPieceAt(diagonalPosition);
 
-      if (diagonalPiece !== null) {
+      if (diagonalPiece.type !== PieceType.NULL) {
         return false;
       }
 
@@ -637,7 +649,10 @@ export default class MoveContext
 
     const diagonalPiece = this._configuration.getPieceAt(diagonalPosition);
 
-    if (diagonalPiece !== null && diagonalPiece.colour === this._piece.colour) {
+    if (
+      diagonalPiece.type !== PieceType.NULL &&
+      diagonalPiece.colour === this._piece.colour
+    ) {
       return false;
     }
 
@@ -663,7 +678,7 @@ export default class MoveContext
 
       const diagonalPiece = this._configuration.getPieceAt(diagonalPosition);
 
-      if (diagonalPiece !== null) {
+      if (diagonalPiece.type !== PieceType.NULL) {
         return false;
       }
 
@@ -683,7 +698,10 @@ export default class MoveContext
 
     const diagonalPiece = this._configuration.getPieceAt(diagonalPosition);
 
-    if (diagonalPiece !== null && diagonalPiece.colour === this._piece.colour) {
+    if (
+      diagonalPiece.type !== PieceType.NULL &&
+      diagonalPiece.colour === this._piece.colour
+    ) {
       return false;
     }
 
@@ -709,7 +727,7 @@ export default class MoveContext
 
       const diagonalPiece = this._configuration.getPieceAt(diagonalPosition);
 
-      if (diagonalPiece !== null) {
+      if (diagonalPiece.type !== PieceType.NULL) {
         return false;
       }
 
@@ -729,7 +747,10 @@ export default class MoveContext
 
     const diagonalPiece = this._configuration.getPieceAt(diagonalPosition);
 
-    if (diagonalPiece !== null && diagonalPiece.colour === this._piece.colour) {
+    if (
+      diagonalPiece.type !== PieceType.NULL &&
+      diagonalPiece.colour === this._piece.colour
+    ) {
       return false;
     }
 
@@ -755,7 +776,7 @@ export default class MoveContext
 
       const diagonalPiece = this._configuration.getPieceAt(diagonalPosition);
 
-      if (diagonalPiece !== null) {
+      if (diagonalPiece.type !== PieceType.NULL) {
         return false;
       }
 
@@ -775,7 +796,10 @@ export default class MoveContext
 
     const diagonalPiece = this._configuration.getPieceAt(diagonalPosition);
 
-    if (diagonalPiece !== null && diagonalPiece.colour === this._piece.colour) {
+    if (
+      diagonalPiece.type !== PieceType.NULL &&
+      diagonalPiece.colour === this._piece.colour
+    ) {
       return false;
     }
 
@@ -794,7 +818,10 @@ export default class MoveContext
 
     const frontPiece = this._configuration.getPieceAt(frontPosition);
 
-    if (frontPiece !== null && frontPiece.colour === this._piece.colour) {
+    if (
+      frontPiece.type !== PieceType.NULL &&
+      frontPiece.colour === this._piece.colour
+    ) {
       return true;
     }
 
@@ -813,7 +840,10 @@ export default class MoveContext
 
     const backPiece = this._configuration.getPieceAt(backPosition);
 
-    if (backPiece !== null && backPiece.colour === this._piece.colour) {
+    if (
+      backPiece.type !== PieceType.NULL &&
+      backPiece.colour === this._piece.colour
+    ) {
       return true;
     }
 
@@ -832,7 +862,10 @@ export default class MoveContext
 
     const leftPiece = this._configuration.getPieceAt(leftPosition);
 
-    if (leftPiece !== null && leftPiece.colour === this._piece.colour) {
+    if (
+      leftPiece.type !== PieceType.NULL &&
+      leftPiece.colour === this._piece.colour
+    ) {
       return true;
     }
 
@@ -851,7 +884,10 @@ export default class MoveContext
 
     const rightPiece = this._configuration.getPieceAt(rightPosition);
 
-    if (rightPiece !== null && rightPiece.colour === this._piece.colour) {
+    if (
+      rightPiece.type !== PieceType.NULL &&
+      rightPiece.colour === this._piece.colour
+    ) {
       return true;
     }
 
@@ -871,7 +907,7 @@ export default class MoveContext
     const frontLeftPiece = this._configuration.getPieceAt(frontLeftPosition);
 
     if (
-      frontLeftPiece !== null &&
+      frontLeftPiece.type !== PieceType.NULL &&
       frontLeftPiece.colour === this._piece.colour
     ) {
       return true;
@@ -893,7 +929,7 @@ export default class MoveContext
     const frontRightPiece = this._configuration.getPieceAt(frontRightPosition);
 
     if (
-      frontRightPiece !== null &&
+      frontRightPiece.type !== PieceType.NULL &&
       frontRightPiece.colour === this._piece.colour
     ) {
       return true;
@@ -914,7 +950,10 @@ export default class MoveContext
 
     const backLeftPiece = this._configuration.getPieceAt(backLeftPosition);
 
-    if (backLeftPiece !== null && backLeftPiece.colour === this._piece.colour) {
+    if (
+      backLeftPiece.type !== PieceType.NULL &&
+      backLeftPiece.colour === this._piece.colour
+    ) {
       return true;
     }
 
@@ -934,7 +973,7 @@ export default class MoveContext
     const backRightPiece = this._configuration.getPieceAt(backRightPosition);
 
     if (
-      backRightPiece !== null &&
+      backRightPiece.type !== PieceType.NULL &&
       backRightPiece.colour === this._piece.colour
     ) {
       return true;
@@ -970,7 +1009,7 @@ export default class MoveContext
     for (let i = 0; i < leftPositions.length - 1; i++) {
       const position = leftPositions[i];
 
-      if (this._configuration.getPieceAt(position) !== null) {
+      if (this._configuration.getPieceAt(position).type !== PieceType.NULL) {
         return false;
       }
     }
@@ -999,7 +1038,7 @@ export default class MoveContext
       leftPositions[leftPositions.length - 1]
     );
 
-    if (comboPiece === null) {
+    if (comboPiece.type === PieceType.NULL) {
       return false;
     }
 
@@ -1046,7 +1085,7 @@ export default class MoveContext
     for (let i = 0; i < rightPositions.length - 1; i++) {
       const position = rightPositions[i];
 
-      if (this._configuration.getPieceAt(position) !== null) {
+      if (this._configuration.getPieceAt(position).type !== PieceType.NULL) {
         return false;
       }
     }
@@ -1075,7 +1114,7 @@ export default class MoveContext
       rightPositions[rightPositions.length - 1]
     );
 
-    if (comboPiece === null) {
+    if (comboPiece.type === PieceType.NULL) {
       return false;
     }
 

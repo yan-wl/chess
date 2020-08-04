@@ -2,17 +2,18 @@ import ChessPiece from './ChessPiece';
 import { Move } from './Move';
 import PawnMoveContext from './PawnMoveContext';
 import { RelativePosition } from './RelativePosition';
-import { PieceColour } from './PieceColour';
 import { MoveEffect } from './MoveEffect';
 import { PieceType } from './PieceType';
 
 export default class Pawn extends ChessPiece {
-  constructor(colour: PieceColour) {
-    super(colour);
-  }
-
   get type(): PieceType {
     return PieceType.PAWN;
+  }
+
+  clone(): Pawn {
+    const clone = new Pawn(this.colour);
+    clone.position = this.position;
+    return clone;
   }
 
   getNonAttackingMoves(moveContext: PawnMoveContext): Move[] {

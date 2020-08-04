@@ -3,8 +3,8 @@ import ChessPieceParser from './ChessPieceParser';
 import ChessPosition from './ChessPosition';
 import ChessPositionColumnParser from './ChessPositionColumnParser';
 import ChessPositionRowParser from './ChessPositionRowParser';
-import ChessPiece from './ChessPiece';
 import ChessPositionParser from './ChessPositionParser';
+import PositionTracker from './PositionTracker';
 
 function isValidRepresentation(representation: string): boolean {
   const re = /^\s*(([wb][kqrbnpo]){8}\s+){7}([wb][kqrbnpo]){8}\s*$/i;
@@ -30,7 +30,7 @@ function parse(representation: string): ChessConfiguration {
   }
 
   let index = 0;
-  const positionMap = new Map<ChessPosition, ChessPiece | null>();
+  const positionTracker = new PositionTracker();
 
   ['8', '7', '6', '5', '4', '3', '2', '1'].forEach((row) => {
     ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'].forEach((column) => {
@@ -40,15 +40,16 @@ function parse(representation: string): ChessConfiguration {
         ChessPositionColumnParser.parse(column),
         ChessPositionRowParser.parse(row)
       );
+
       const piece = ChessPieceParser.parse(pieceRepr);
 
-      positionMap.set(position, piece);
+      positionTracker.set(position, piece);
 
       index++;
     });
   });
 
-  return new ChessConfiguration(positionMap);
+  return new ChessConfiguration(positionTracker);
 }
 
 /**
@@ -62,7 +63,7 @@ function parse(representation: string): ChessConfiguration {
 function serialize(configuration: ChessConfiguration): string {
   let result = '';
 
-  [...configuration.positionMap.entries()]
+  [...configuration.positionTracker.entries()]
     .map<[string, string]>(([position, piece]) => [
       ChessPositionParser.serialize(position),
       ChessPieceParser.serialize(piece)

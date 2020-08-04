@@ -1,14 +1,15 @@
-import { REGULAR_CONFIG, CASTLE_TEST } from './ConfigProvider';
+import { REGULAR_CONFIG } from './ConfigProvider';
 import ChessBoard from './ChessBoard';
 import ChessConfigurationParser from './ChessConfigurationParser';
 import ChessMoveParser from './ChessMoveParser';
+
+const initConfig = REGULAR_CONFIG;
 
 export default class ChessGame {
   private _chessBoard: ChessBoard;
 
   constructor() {
     // const initConfig = REGULAR_CONFIG;
-    const initConfig = CASTLE_TEST;
     this._chessBoard = new ChessBoard(
       ChessConfigurationParser.parse(initConfig)
     );

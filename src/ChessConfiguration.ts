@@ -1,36 +1,26 @@
 import ChessPosition from './ChessPosition';
-import ChessPiece from './ChessPiece';
 import { MoveEffect } from './MoveEffect';
 import { RelativePosition } from './RelativePosition';
 import { Orientation } from './Orientation';
 import ChessMove from './ChessMove';
+import NullPiece from './NullPiece';
+import { PieceColour } from './PieceColour';
+import PositionTracker from './PositionTracker';
+import ChessPiece from './ChessPiece';
 
 export default class ChessConfiguration {
-  private _positionMap: Map<ChessPosition, ChessPiece | null>;
+  private _positionTracker: PositionTracker;
 
-  constructor(positionMap: Map<ChessPosition, ChessPiece | null>) {
-    this._positionMap = positionMap;
+  constructor(positionTracker: PositionTracker) {
+    this._positionTracker = positionTracker;
   }
 
-  get positionMap(): Map<ChessPosition, ChessPiece | null> {
-    return this._positionMap;
+  get positionTracker(): PositionTracker {
+    return this._positionTracker;
   }
 
-  /**
-   * To retrieve the chess piece placed at any position
-   *
-   * @param position a chess position
-   * @returns the chess piece in the position or null if there is none
-   * @throws error if the position is unknown
-   */
-  getPieceAt(position: ChessPosition): ChessPiece | null {
-    const piece = this._positionMap.get(position);
-
-    if (piece === undefined) {
-      throw Error('Invalid chess position.');
-    }
-
-    return piece;
+  getPieceAt(position: ChessPosition): ChessPiece {
+    return this.positionTracker.get(position);
   }
 
   /**
@@ -53,19 +43,37 @@ export default class ChessConfiguration {
 
     const sourcePiece = this.getPieceAt(chessMove.source);
 
-    const newMap = new Map(this._positionMap);
+    const newPositionTracker = this.positionTracker.clone();
 
     switch (effect) {
       case MoveEffect.REGULAR:
-        newMap.set(chessMove.destination, sourcePiece);
-        newMap.set(chessMove.source, null);
+        newPositionTracker.set(chessMove.destination, sourcePiece);
+        newPositionTracker.set(
+          chessMove.source,
+          new NullPiece(
+            sourcePiece.colour === PieceColour.BLACK
+              ? PieceColour.WHITE
+              : PieceColour.BLACK
+          )
+        );
         break;
       case MoveEffect.EN_PASSANT:
-        newMap.set(chessMove.destination, sourcePiece);
-        newMap.set(chessMove.source, null);
-        newMap.set(
+        newPositionTracker.set(chessMove.destination, sourcePiece);
+        newPositionTracker.set(
+          chessMove.source,
+          new NullPiece(
+            sourcePiece.colour === PieceColour.BLACK
+              ? PieceColour.WHITE
+              : PieceColour.BLACK
+          )
+        );
+        newPositionTracker.set(
           chessMove.destination.apply([RelativePosition.BACK], orientation),
-          null
+          new NullPiece(
+            sourcePiece.colour === PieceColour.BLACK
+              ? PieceColour.WHITE
+              : PieceColour.BLACK
+          )
         );
         break;
       case MoveEffect.PROMOTION:
@@ -73,12 +81,26 @@ export default class ChessConfiguration {
         if (chessMove.promotionPiece === null) {
           throw Error('Missing promotion piece.');
         }
-        newMap.set(chessMove.source, null);
-        newMap.set(chessMove.destination, chessMove.promotionPiece);
+        newPositionTracker.set(
+          chessMove.source,
+          new NullPiece(
+            sourcePiece.colour === PieceColour.BLACK
+              ? PieceColour.WHITE
+              : PieceColour.BLACK
+          )
+        );
+        newPositionTracker.set(chessMove.destination, chessMove.promotionPiece);
         break;
       case MoveEffect.LEFT_CASTLE:
-        newMap.set(chessMove.destination, sourcePiece);
-        newMap.set(chessMove.source, null);
+        newPositionTracker.set(chessMove.destination, sourcePiece);
+        newPositionTracker.set(
+          chessMove.source,
+          new NullPiece(
+            sourcePiece.colour === PieceColour.BLACK
+              ? PieceColour.WHITE
+              : PieceColour.BLACK
+          )
+        );
 
         let leftMostPosition: ChessPosition = chessMove.source;
 
@@ -95,16 +117,30 @@ export default class ChessConfiguration {
           leftMostPosition = leftPosition;
         }
 
-        newMap.set(
+        newPositionTracker.set(
           chessMove.source.apply([RelativePosition.LEFT], orientation),
           this.getPieceAt(leftMostPosition)
         );
-        newMap.set(leftMostPosition, null);
+        newPositionTracker.set(
+          leftMostPosition,
+          new NullPiece(
+            sourcePiece.colour === PieceColour.BLACK
+              ? PieceColour.WHITE
+              : PieceColour.BLACK
+          )
+        );
 
         break;
       case MoveEffect.RIGHT_CASTLE:
-        newMap.set(chessMove.destination, sourcePiece);
-        newMap.set(chessMove.source, null);
+        newPositionTracker.set(chessMove.destination, sourcePiece);
+        newPositionTracker.set(
+          chessMove.source,
+          new NullPiece(
+            sourcePiece.colour === PieceColour.BLACK
+              ? PieceColour.WHITE
+              : PieceColour.BLACK
+          )
+        );
 
         let rightMostPosition: ChessPosition = chessMove.source;
 
@@ -121,15 +157,22 @@ export default class ChessConfiguration {
           rightMostPosition = rightPosition;
         }
 
-        newMap.set(
+        newPositionTracker.set(
           chessMove.source.apply([RelativePosition.RIGHT], orientation),
           this.getPieceAt(rightMostPosition)
         );
-        newMap.set(rightMostPosition, null);
+        newPositionTracker.set(
+          rightMostPosition,
+          new NullPiece(
+            sourcePiece.colour === PieceColour.BLACK
+              ? PieceColour.WHITE
+              : PieceColour.BLACK
+          )
+        );
 
         break;
     }
 
-    return new ChessConfiguration(newMap);
+    return new ChessConfiguration(newPositionTracker);
   }
 }

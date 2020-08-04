@@ -24,6 +24,10 @@ export default class ChessBoard {
     }
   }
 
+  get orientation(): Orientation {
+    return this._orientation;
+  }
+
   get currentConfiguration(): ChessConfiguration {
     return this._configurations[this._configurations.length - 1];
   }

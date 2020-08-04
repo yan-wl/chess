@@ -1,18 +1,19 @@
 import ChessPiece from './ChessPiece';
 import QueenMoveContext from './QueenMoveContext';
 import { Move } from './Move';
-import { PieceColour } from './PieceColour';
 import { RelativePosition } from './RelativePosition';
 import { MoveEffect } from './MoveEffect';
 import { PieceType } from './PieceType';
 
 export default class Queen extends ChessPiece {
-  constructor(colour: PieceColour) {
-    super(colour);
-  }
-
   get type(): PieceType {
     return PieceType.QUEEN;
+  }
+
+  clone(): Queen {
+    const clone = new Queen(this.colour);
+    clone.position = this.position;
+    return clone;
   }
 
   getNonAttackingMoves(): Move[] {

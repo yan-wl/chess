@@ -26,7 +26,7 @@ export function isUnderAttack(
   // Calculate all attacked positions
   const attackedPositions: Set<ChessPosition> = new Set();
 
-  for (const [position, piece] of configuration.positionMap.entries()) {
+  for (const [position, piece] of configuration.positionTracker.entries()) {
     // Only calculate for pieces with a different colour
     if (piece !== null && piece.colour !== colour) {
       const moves = piece.getAttackingMoves(moveContext);

@@ -4,5 +4,6 @@ export enum PieceType {
   BISHOP,
   ROOK,
   QUEEN,
-  KING
+  KING,
+  NULL
 }

@@ -20,7 +20,14 @@ function prompt(question: string): Promise<string> {
   });
 }
 
+function printStatus(): void {
+  IO.write(chessGame.state);
+  IO.write('\n');
+}
+
 async function start() {
+  printStatus();
+
   while (true) {
     const answer = await prompt('Enter your move: ');
 

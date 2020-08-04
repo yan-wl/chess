@@ -1,18 +1,19 @@
 import ChessPiece from './ChessPiece';
 import RookMoveContext from './RookMoveContext';
 import { Move } from './Move';
-import { PieceColour } from './PieceColour';
 import { RelativePosition } from './RelativePosition';
 import { MoveEffect } from './MoveEffect';
 import { PieceType } from './PieceType';
 
 export default class Rook extends ChessPiece {
-  constructor(colour: PieceColour) {
-    super(colour);
-  }
-
   get type(): PieceType {
     return PieceType.ROOK;
+  }
+
+  clone(): Rook {
+    const clone = new Rook(this.colour);
+    clone.position = this.position;
+    return clone;
   }
 
   getNonAttackingMoves(): Move[] {

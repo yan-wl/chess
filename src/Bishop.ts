@@ -1,18 +1,19 @@
 import ChessPiece from './ChessPiece';
 import BishopMoveContext from './BishopMoveContext';
 import { Move } from './Move';
-import { PieceColour } from './PieceColour';
 import { RelativePosition } from './RelativePosition';
 import { MoveEffect } from './MoveEffect';
 import { PieceType } from './PieceType';
 
 export default class Bishop extends ChessPiece {
-  constructor(colour: PieceColour) {
-    super(colour);
-  }
-
   get type(): PieceType {
     return PieceType.BISHOP;
+  }
+
+  clone(): Bishop {
+    const clone = new Bishop(this.colour);
+    clone.position = this.position;
+    return clone;
   }
 
   getNonAttackingMoves(): Move[] {

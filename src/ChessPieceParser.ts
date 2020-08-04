@@ -1,3 +1,4 @@
+import PieceColourParser from './PieceColourParser';
 import ChessPiece from './ChessPiece';
 import Pawn from './Pawn';
 import King from './King';
@@ -5,7 +6,8 @@ import Queen from './Queen';
 import Rook from './Rook';
 import Bishop from './Bishop';
 import Knight from './Knight';
-import PieceColourParser from './PieceColourParser';
+import NullPiece from './NullPiece';
+import { PieceType } from './PieceType';
 
 function isValidRepresentation(representation: string): boolean {
   const re = /^[wb][kqrbnpo]$/i;
@@ -20,7 +22,7 @@ function isValidRepresentation(representation: string): boolean {
  * @param representation string that represents a chess piece
  * @returns the corresponding chess piece if valid, else throws an error
  */
-function parse(representation: string): ChessPiece | null {
+function parse(representation: string): ChessPiece {
   if (!isValidRepresentation(representation)) {
     throw Error('Invalid chess piece.');
   }
@@ -41,7 +43,7 @@ function parse(representation: string): ChessPiece | null {
     case 'P':
       return new Pawn(PieceColourParser.parse(colour));
     case 'O':
-      return null;
+      return new NullPiece(PieceColourParser.parse(colour));
     default:
       throw Error('Incorrect parser validation.');
   }
@@ -55,29 +57,32 @@ function parse(representation: string): ChessPiece | null {
  * @param piece chess piece to serialize
  * @returns string that represents the chess piece
  */
-function serialize(piece: ChessPiece | null): string {
-  // Colour does not matter for null pieces; white is arbitrarily chosen
-  if (piece === null) {
-    return 'WO';
-  }
-
+function serialize(piece: ChessPiece): string {
   const colour: string = PieceColourParser.serialize(piece.colour);
   let type: string;
 
-  if (piece instanceof King) {
-    type = 'K';
-  } else if (piece instanceof Queen) {
-    type = 'Q';
-  } else if (piece instanceof Rook) {
-    type = 'R';
-  } else if (piece instanceof Bishop) {
-    type = 'B';
-  } else if (piece instanceof Knight) {
-    type = 'N';
-  } else if (piece instanceof Pawn) {
-    type = 'P';
-  } else {
-    throw Error('Unknown piece type.');
+  switch (piece.type) {
+    case PieceType.BISHOP:
+      type = 'B';
+      break;
+    case PieceType.KING:
+      type = 'K';
+      break;
+    case PieceType.KNIGHT:
+      type = 'N';
+      break;
+    case PieceType.NULL:
+      type = 'O';
+      break;
+    case PieceType.PAWN:
+      type = 'P';
+      break;
+    case PieceType.QUEEN:
+      type = 'Q';
+      break;
+    case PieceType.ROOK:
+      type = 'R';
+      break;
   }
 
   return `${colour}${type}`;
