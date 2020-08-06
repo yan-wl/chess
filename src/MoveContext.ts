@@ -56,8 +56,8 @@ export default class MoveContext
   }
 
   pawnHasNotMoved(): boolean {
-    const records = this._history.filter(
-      (record) => record.piece === this._piece
+    const records = this._history.filter((record) =>
+      record.piece.equals(this._piece)
     );
 
     return records.size === 0;
@@ -199,7 +199,7 @@ export default class MoveContext
     const frontLeftPiece = this._configuration.getPieceAt(frontLeftPosition);
 
     if (
-      frontLeftPiece.type !== PieceType.NULL ||
+      frontLeftPiece.type === PieceType.NULL ||
       frontLeftPiece.colour === this._piece.colour
     ) {
       return false;
@@ -1048,7 +1048,8 @@ export default class MoveContext
 
     // Check if combo pieces have moved
     const records = this._history.filter(
-      (record) => record.piece === this._piece || record.piece === comboPiece
+      (record) =>
+        record.piece.equals(this._piece) || record.piece.equals(comboPiece)
     );
 
     if (records.size !== 0) {
@@ -1124,7 +1125,8 @@ export default class MoveContext
 
     // Check if combo pieces have moved
     const records = this._history.filter(
-      (record) => record.piece === this._piece || record.piece === comboPiece
+      (record) =>
+        record.piece.equals(this._piece) || record.piece.equals(comboPiece)
     );
 
     if (records.size !== 0) {

@@ -1,7 +1,6 @@
 import ChessPiece from './ChessPiece';
 import { PieceType } from './PieceType';
 import { Move } from './Move';
-import MoveContext from './MoveContext';
 
 export default class NullPiece extends ChessPiece {
   get type(): PieceType {
@@ -11,6 +10,7 @@ export default class NullPiece extends ChessPiece {
   clone(): NullPiece {
     const clone = new NullPiece(this.colour);
     clone.position = this.position;
+    clone.id = this.id;
     return clone;
   }
 

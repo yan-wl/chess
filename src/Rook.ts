@@ -13,6 +13,7 @@ export default class Rook extends ChessPiece {
   clone(): Rook {
     const clone = new Rook(this.colour);
     clone.position = this.position;
+    clone.id = this.id;
     return clone;
   }
 

@@ -13,6 +13,7 @@ export default class Pawn extends ChessPiece {
   clone(): Pawn {
     const clone = new Pawn(this.colour);
     clone.position = this.position;
+    clone.id = this.id;
     return clone;
   }
 

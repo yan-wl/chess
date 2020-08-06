@@ -6,10 +6,12 @@ import ChessPosition from './ChessPosition';
 import { ChessPositionColumn } from './ChessPositionColumn';
 import { ChessPositionRow } from './ChessPositionRow';
 import Cloneable from './Cloneable';
+import { generateId } from './IdGenerator';
 
 export default abstract class ChessPiece implements Cloneable<ChessPiece> {
   private _colour: PieceColour;
   private _position: ChessPosition;
+  private _id: string;
 
   constructor(colour: PieceColour) {
     this._colour = colour;
@@ -17,6 +19,7 @@ export default abstract class ChessPiece implements Cloneable<ChessPiece> {
       ChessPositionColumn.OUTSIDE,
       ChessPositionRow.OUTSIDE
     );
+    this._id = generateId();
   }
 
   abstract clone(): ChessPiece;
@@ -33,6 +36,14 @@ export default abstract class ChessPiece implements Cloneable<ChessPiece> {
     this._position = position;
   }
 
+  get id(): string {
+    return this._id;
+  }
+
+  set id(id: string) {
+    this._id = id;
+  }
+
   abstract get type(): PieceType;
   abstract getNonAttackingMoves(moveContext: MoveContext): Move[];
   abstract getAttackingMoves(moveContext: MoveContext): Move[];
@@ -41,5 +52,9 @@ export default abstract class ChessPiece implements Cloneable<ChessPiece> {
     return this.getAttackingMoves(moveContext).concat(
       this.getNonAttackingMoves(moveContext)
     );
+  }
+
+  equals(otherPiece: ChessPiece): boolean {
+    return this._id === otherPiece._id;
   }
 }

@@ -13,6 +13,7 @@ export default class Bishop extends ChessPiece {
   clone(): Bishop {
     const clone = new Bishop(this.colour);
     clone.position = this.position;
+    clone.id = this.id;
     return clone;
   }
 

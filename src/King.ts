@@ -13,6 +13,7 @@ export default class King extends ChessPiece {
   clone(): King {
     const clone = new King(this.colour);
     clone.position = this.position;
+    clone.id = this.id;
     return clone;
   }
 
