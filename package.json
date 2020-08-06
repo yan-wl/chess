@@ -1,8 +1,8 @@
 {
-  "name": "chess",
+  "name": "@yanwl/chess",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "An amateurish chess engine",
+  "main": "./build/ChessGame.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "game": "node build/ChessDriver.js"

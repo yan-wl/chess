@@ -3,6 +3,7 @@ import ChessMove from './ChessMove';
 import MoveContext from './MoveContext';
 import MoveHistory from './MoveHistory';
 import { Orientation } from './Orientation';
+import { PieceColour } from './PieceColour';
 
 export default class ChessBoard {
   private _configurations: ChessConfiguration[];
@@ -34,6 +35,17 @@ export default class ChessBoard {
       throw Error('Invalid move.');
     }
 
+    if (
+      !(
+        (movingPiece.colour === PieceColour.WHITE &&
+          this._orientation === Orientation.WHITE) ||
+        (movingPiece.colour === PieceColour.BLACK &&
+          this._orientation === Orientation.BLACK)
+      )
+    ) {
+      throw Error('Invalid move.');
+    }
+
     const moveContext = new MoveContext(
       this.currentConfiguration,
       chessMove.source,
@@ -42,7 +54,7 @@ export default class ChessBoard {
       this._orientation
     );
 
-    const possibleMoves = movingPiece.getPossibleMoves(moveContext);
+    const possibleMoves = movingPiece.getAllMoves(moveContext);
 
     /*
       This is potentially too inefficient.

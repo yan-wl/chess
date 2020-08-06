@@ -1,20 +1,15 @@
 import * as readline from 'readline';
-import ChessBoard from './ChessBoard';
-import ChessMoveParser from './ChessMoveParser';
-import ChessConfigurationParser from './ChessConfigurationParser';
-import { REGULAR_CONFIG } from './ConfigProvider';
+import ChessGame from './ChessGame';
 
 const IO = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
-const initConfig = REGULAR_CONFIG;
-
-const chessBoard = new ChessBoard(ChessConfigurationParser.parse(initConfig));
+const chessGame = new ChessGame();
 
 IO.write('Starting position:\n');
-IO.write(ChessConfigurationParser.serialize(chessBoard.currentConfiguration));
+IO.write(chessGame.state);
 IO.write('\n');
 
 const EXIT_COMMAND = 'quit';
@@ -35,12 +30,11 @@ async function start() {
     }
 
     try {
-      chessBoard.move(ChessMoveParser.parse(answer));
-      IO.write(
-        ChessConfigurationParser.serialize(chessBoard.currentConfiguration)
-      );
+      chessGame.execute(answer);
+      IO.write(chessGame.state);
       IO.write('\n');
     } catch (error) {
+      IO.write(error.stack);
       IO.write(error.message);
       IO.write('\n');
     }

@@ -15,12 +15,16 @@ export default class Bishop extends ChessPiece {
     return PieceType.BISHOP;
   }
 
-  getPossibleMoves(moveContext: BishopMoveContext): Move[] {
-    const possibleMoves: Move[] = [];
+  getNonAttackingMoves(): Move[] {
+    return [];
+  }
+
+  getAttackingMoves(moveContext: BishopMoveContext): Move[] {
+    const attackingMoves: Move[] = [];
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenNorthEastDiagonal(i)) {
-        possibleMoves.push({
+        attackingMoves.push({
           // NOTE: fill(null) is necessary as mapping is not allowed on empty slots
           steps: Array(i * 2)
             .fill(null)
@@ -34,7 +38,7 @@ export default class Bishop extends ChessPiece {
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenSouthEastDiagonal(i)) {
-        possibleMoves.push({
+        attackingMoves.push({
           steps: Array(i * 2)
             .fill(null)
             .map((_, index) =>
@@ -47,7 +51,7 @@ export default class Bishop extends ChessPiece {
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenSouthWestDiagonal(i)) {
-        possibleMoves.push({
+        attackingMoves.push({
           steps: Array(i * 2)
             .fill(null)
             .map((_, index) =>
@@ -60,7 +64,7 @@ export default class Bishop extends ChessPiece {
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenNorthWestDiagonal(i)) {
-        possibleMoves.push({
+        attackingMoves.push({
           steps: Array(i * 2)
             .fill(null)
             .map((_, index) =>
@@ -71,6 +75,6 @@ export default class Bishop extends ChessPiece {
       }
     }
 
-    return possibleMoves;
+    return attackingMoves;
   }
 }

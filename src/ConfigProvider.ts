@@ -27,6 +27,6 @@ bObObObObObObObO
 bObObObObObObObO
 wOwOwOwOwOwOwOwO
 wOwOwOwOwOwOwOwO
-wOwPwPwPwPwPwPwP
+wPwPwPwPwPwPwPwP
 wRwOwOwOwKwOwOwR
 `;

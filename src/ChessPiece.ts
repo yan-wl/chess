@@ -15,5 +15,12 @@ export default abstract class ChessPiece {
   }
 
   abstract get type(): PieceType;
-  abstract getPossibleMoves(moveContext: MoveContext): Move[];
+  abstract getNonAttackingMoves(moveContext: MoveContext): Move[];
+  abstract getAttackingMoves(moveContext: MoveContext): Move[];
+
+  getAllMoves(moveContext: MoveContext): Move[] {
+    return this.getAttackingMoves(moveContext).concat(
+      this.getNonAttackingMoves(moveContext)
+    );
+  }
 }

@@ -3,7 +3,6 @@ import { PieceColour } from './PieceColour';
 import ChessConfiguration from './ChessConfiguration';
 import MoveContext from './MoveContext';
 import { Orientation } from './Orientation';
-import { PieceType } from './PieceType';
 
 /**
  * Determines if the position in the configuration is being attacked by a piece, that is not a king, of different colour
@@ -29,12 +28,8 @@ export function isUnderAttack(
 
   for (const [position, piece] of configuration.positionMap.entries()) {
     // Only calculate for pieces with a different colour
-    if (
-      piece !== null &&
-      piece.colour !== colour &&
-      piece.type !== PieceType.KING
-    ) {
-      const moves = piece.getPossibleMoves(moveContext);
+    if (piece !== null && piece.colour !== colour) {
+      const moves = piece.getAttackingMoves(moveContext);
 
       for (const move of moves) {
         const attackedPosition = position.apply(move.steps, orientation);

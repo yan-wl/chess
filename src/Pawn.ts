@@ -15,13 +15,12 @@ export default class Pawn extends ChessPiece {
     return PieceType.PAWN;
   }
 
-  getPossibleMoves(moveContext: PawnMoveContext): Move[] {
-    const possibleMoves: Move[] = [];
+  getNonAttackingMoves(moveContext: PawnMoveContext): Move[] {
+    const nonAttackingMoves: Move[] = [];
 
     // NOTE: Using === false is intentional to account for undefined.
-
     if (moveContext.hasPieceInFront() === false) {
-      possibleMoves.push({
+      nonAttackingMoves.push({
         steps: [RelativePosition.FRONT],
         effect: moveContext.isOnSeventhRank()
           ? MoveEffect.PROMOTION
@@ -34,28 +33,34 @@ export default class Pawn extends ChessPiece {
       moveContext.hasPieceInFront() === false &&
       moveContext.hasPieceTwoSquaresInFront() === false
     ) {
-      possibleMoves.push({
+      nonAttackingMoves.push({
         steps: [RelativePosition.FRONT, RelativePosition.FRONT],
         effect: MoveEffect.REGULAR
       });
     }
 
     if (moveContext.leftEnPassantIsAllowed()) {
-      possibleMoves.push({
+      nonAttackingMoves.push({
         steps: [RelativePosition.FRONT, RelativePosition.LEFT],
         effect: MoveEffect.EN_PASSANT
       });
     }
 
     if (moveContext.rightEnPassantIsAllowed()) {
-      possibleMoves.push({
+      nonAttackingMoves.push({
         steps: [RelativePosition.FRONT, RelativePosition.RIGHT],
         effect: MoveEffect.EN_PASSANT
       });
     }
 
+    return nonAttackingMoves;
+  }
+
+  getAttackingMoves(moveContext: PawnMoveContext): Move[] {
+    const attackingMoves: Move[] = [];
+
     if (moveContext.hasEnemyFrontLeft()) {
-      possibleMoves.push({
+      attackingMoves.push({
         steps: [RelativePosition.FRONT, RelativePosition.LEFT],
         effect: moveContext.isOnSeventhRank()
           ? MoveEffect.PROMOTION
@@ -64,7 +69,7 @@ export default class Pawn extends ChessPiece {
     }
 
     if (moveContext.hasEnemyFrontRight()) {
-      possibleMoves.push({
+      attackingMoves.push({
         steps: [RelativePosition.FRONT, RelativePosition.RIGHT],
         effect: moveContext.isOnSeventhRank()
           ? MoveEffect.PROMOTION
@@ -72,6 +77,6 @@ export default class Pawn extends ChessPiece {
       });
     }
 
-    return possibleMoves;
+    return attackingMoves;
   }
 }

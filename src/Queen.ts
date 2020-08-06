@@ -15,12 +15,16 @@ export default class Queen extends ChessPiece {
     return PieceType.QUEEN;
   }
 
-  getPossibleMoves(moveContext: QueenMoveContext): Move[] {
-    const possibleMoves: Move[] = [];
+  getNonAttackingMoves(): Move[] {
+    return [];
+  }
+
+  getAttackingMoves(moveContext: QueenMoveContext): Move[] {
+    const attackingMoves: Move[] = [];
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenFrontLane(i)) {
-        possibleMoves.push({
+        attackingMoves.push({
           steps: Array(i).fill(RelativePosition.FRONT),
           effect: MoveEffect.REGULAR
         });
@@ -29,7 +33,7 @@ export default class Queen extends ChessPiece {
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenBackLane(i)) {
-        possibleMoves.push({
+        attackingMoves.push({
           steps: Array(i).fill(RelativePosition.BACK),
           effect: MoveEffect.REGULAR
         });
@@ -38,7 +42,7 @@ export default class Queen extends ChessPiece {
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenLeftLane(i)) {
-        possibleMoves.push({
+        attackingMoves.push({
           steps: Array(i).fill(RelativePosition.LEFT),
           effect: MoveEffect.REGULAR
         });
@@ -47,7 +51,7 @@ export default class Queen extends ChessPiece {
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenRightLane(i)) {
-        possibleMoves.push({
+        attackingMoves.push({
           steps: Array(i).fill(RelativePosition.RIGHT),
           effect: MoveEffect.REGULAR
         });
@@ -56,7 +60,7 @@ export default class Queen extends ChessPiece {
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenNorthEastDiagonal(i)) {
-        possibleMoves.push({
+        attackingMoves.push({
           // NOTE: fill(null) is necessary as mapping is not allowed on empty slots
           steps: Array(i * 2)
             .fill(null)
@@ -70,7 +74,7 @@ export default class Queen extends ChessPiece {
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenSouthEastDiagonal(i)) {
-        possibleMoves.push({
+        attackingMoves.push({
           steps: Array(i * 2)
             .fill(null)
             .map((_, index) =>
@@ -83,7 +87,7 @@ export default class Queen extends ChessPiece {
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenSouthWestDiagonal(i)) {
-        possibleMoves.push({
+        attackingMoves.push({
           steps: Array(i * 2)
             .fill(null)
             .map((_, index) =>
@@ -96,7 +100,7 @@ export default class Queen extends ChessPiece {
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenNorthWestDiagonal(i)) {
-        possibleMoves.push({
+        attackingMoves.push({
           steps: Array(i * 2)
             .fill(null)
             .map((_, index) =>
@@ -107,6 +111,6 @@ export default class Queen extends ChessPiece {
       }
     }
 
-    return possibleMoves;
+    return attackingMoves;
   }
 }

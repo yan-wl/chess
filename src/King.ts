@@ -15,81 +15,86 @@ export default class King extends ChessPiece {
     return PieceType.KING;
   }
 
-  getPossibleMoves(moveContext: KingMoveContext): Move[] {
-    const possibleMoves: Move[] = [];
-
-    // NOTE: Using === false is intentional to account for undefined.
-
-    if (moveContext.hasAllyInFront() === false) {
-      possibleMoves.push({
-        steps: [RelativePosition.FRONT],
-        effect: MoveEffect.REGULAR
-      });
-    }
-
-    if (moveContext.hasAllyBehind() === false) {
-      possibleMoves.push({
-        steps: [RelativePosition.BACK],
-        effect: MoveEffect.REGULAR
-      });
-    }
-
-    if (moveContext.hasAllyOnLeft() === false) {
-      possibleMoves.push({
-        steps: [RelativePosition.LEFT],
-        effect: MoveEffect.REGULAR
-      });
-    }
-
-    if (moveContext.hasAllyOnRight() === false) {
-      possibleMoves.push({
-        steps: [RelativePosition.RIGHT],
-        effect: MoveEffect.REGULAR
-      });
-    }
-
-    if (moveContext.hasAllyFrontLeft() === false) {
-      possibleMoves.push({
-        steps: [RelativePosition.FRONT, RelativePosition.LEFT],
-        effect: MoveEffect.REGULAR
-      });
-    }
-
-    if (moveContext.hasAllyFrontRight() === false) {
-      possibleMoves.push({
-        steps: [RelativePosition.FRONT, RelativePosition.RIGHT],
-        effect: MoveEffect.REGULAR
-      });
-    }
-
-    if (moveContext.hasAllyBackLeft() === false) {
-      possibleMoves.push({
-        steps: [RelativePosition.BACK, RelativePosition.LEFT],
-        effect: MoveEffect.REGULAR
-      });
-    }
-
-    if (moveContext.hasAllyBackRight() === false) {
-      possibleMoves.push({
-        steps: [RelativePosition.BACK, RelativePosition.RIGHT],
-        effect: MoveEffect.REGULAR
-      });
-    }
+  getNonAttackingMoves(moveContext: KingMoveContext): Move[] {
+    const nonAttackingMoves: Move[] = [];
 
     if (moveContext.leftCastleIsAllowed()) {
-      possibleMoves.push({
+      nonAttackingMoves.push({
         steps: [RelativePosition.LEFT, RelativePosition.LEFT],
         effect: MoveEffect.LEFT_CASTLE
       });
     }
 
     if (moveContext.rightCastleIsAllowed()) {
-      possibleMoves.push({
+      nonAttackingMoves.push({
         steps: [RelativePosition.RIGHT, RelativePosition.RIGHT],
         effect: MoveEffect.RIGHT_CASTLE
       });
     }
 
-    return possibleMoves;
+    return nonAttackingMoves;
+  }
+
+  getAttackingMoves(moveContext: KingMoveContext): Move[] {
+    const attackingMoves: Move[] = [];
+
+    // NOTE: Using === false is intentional to account for undefined.
+    if (moveContext.hasAllyInFront() === false) {
+      attackingMoves.push({
+        steps: [RelativePosition.FRONT],
+        effect: MoveEffect.REGULAR
+      });
+    }
+
+    if (moveContext.hasAllyBehind() === false) {
+      attackingMoves.push({
+        steps: [RelativePosition.BACK],
+        effect: MoveEffect.REGULAR
+      });
+    }
+
+    if (moveContext.hasAllyOnLeft() === false) {
+      attackingMoves.push({
+        steps: [RelativePosition.LEFT],
+        effect: MoveEffect.REGULAR
+      });
+    }
+
+    if (moveContext.hasAllyOnRight() === false) {
+      attackingMoves.push({
+        steps: [RelativePosition.RIGHT],
+        effect: MoveEffect.REGULAR
+      });
+    }
+
+    if (moveContext.hasAllyFrontLeft() === false) {
+      attackingMoves.push({
+        steps: [RelativePosition.FRONT, RelativePosition.LEFT],
+        effect: MoveEffect.REGULAR
+      });
+    }
+
+    if (moveContext.hasAllyFrontRight() === false) {
+      attackingMoves.push({
+        steps: [RelativePosition.FRONT, RelativePosition.RIGHT],
+        effect: MoveEffect.REGULAR
+      });
+    }
+
+    if (moveContext.hasAllyBackLeft() === false) {
+      attackingMoves.push({
+        steps: [RelativePosition.BACK, RelativePosition.LEFT],
+        effect: MoveEffect.REGULAR
+      });
+    }
+
+    if (moveContext.hasAllyBackRight() === false) {
+      attackingMoves.push({
+        steps: [RelativePosition.BACK, RelativePosition.RIGHT],
+        effect: MoveEffect.REGULAR
+      });
+    }
+
+    return attackingMoves;
   }
 }

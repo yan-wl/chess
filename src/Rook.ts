@@ -15,12 +15,16 @@ export default class Rook extends ChessPiece {
     return PieceType.ROOK;
   }
 
-  getPossibleMoves(moveContext: RookMoveContext): Move[] {
-    const possibleMoves: Move[] = [];
+  getNonAttackingMoves(): Move[] {
+    return [];
+  }
+
+  getAttackingMoves(moveContext: RookMoveContext): Move[] {
+    const attackingMoves: Move[] = [];
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenFrontLane(i)) {
-        possibleMoves.push({
+        attackingMoves.push({
           steps: Array(i).fill(RelativePosition.FRONT),
           effect: MoveEffect.REGULAR
         });
@@ -29,7 +33,7 @@ export default class Rook extends ChessPiece {
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenBackLane(i)) {
-        possibleMoves.push({
+        attackingMoves.push({
           steps: Array(i).fill(RelativePosition.BACK),
           effect: MoveEffect.REGULAR
         });
@@ -38,7 +42,7 @@ export default class Rook extends ChessPiece {
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenLeftLane(i)) {
-        possibleMoves.push({
+        attackingMoves.push({
           steps: Array(i).fill(RelativePosition.LEFT),
           effect: MoveEffect.REGULAR
         });
@@ -47,13 +51,13 @@ export default class Rook extends ChessPiece {
 
     for (let i = 1; i < 8; i++) {
       if (moveContext.hasOpenRightLane(i)) {
-        possibleMoves.push({
+        attackingMoves.push({
           steps: Array(i).fill(RelativePosition.RIGHT),
           effect: MoveEffect.REGULAR
         });
       }
     }
 
-    return possibleMoves;
+    return attackingMoves;
   }
 }

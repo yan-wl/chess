@@ -15,13 +15,17 @@ export default class Knight extends ChessPiece {
     return PieceType.KNIGHT;
   }
 
-  getPossibleMoves(moveContext: KnightMoveContext): Move[] {
-    const possibleMoves: Move[] = [];
+  getNonAttackingMoves(): Move[] {
+    return [];
+  }
+
+  getAttackingMoves(moveContext: KnightMoveContext): Move[] {
+    const attackingMoves: Move[] = [];
 
     // NOTE: Using === false is intentional to account for undefined.
 
     if (moveContext.hasAllyOnOne() === false) {
-      possibleMoves.push({
+      attackingMoves.push({
         steps: [
           RelativePosition.FRONT,
           RelativePosition.FRONT,
@@ -32,7 +36,7 @@ export default class Knight extends ChessPiece {
     }
 
     if (moveContext.hasAllyOnTwo() === false) {
-      possibleMoves.push({
+      attackingMoves.push({
         steps: [
           RelativePosition.RIGHT,
           RelativePosition.RIGHT,
@@ -43,7 +47,7 @@ export default class Knight extends ChessPiece {
     }
 
     if (moveContext.hasAllyOnFour() === false) {
-      possibleMoves.push({
+      attackingMoves.push({
         steps: [
           RelativePosition.RIGHT,
           RelativePosition.RIGHT,
@@ -54,7 +58,7 @@ export default class Knight extends ChessPiece {
     }
 
     if (moveContext.hasAllyOnFive() === false) {
-      possibleMoves.push({
+      attackingMoves.push({
         steps: [
           RelativePosition.BACK,
           RelativePosition.BACK,
@@ -65,7 +69,7 @@ export default class Knight extends ChessPiece {
     }
 
     if (moveContext.hasAllyOnSeven() === false) {
-      possibleMoves.push({
+      attackingMoves.push({
         steps: [
           RelativePosition.BACK,
           RelativePosition.BACK,
@@ -76,7 +80,7 @@ export default class Knight extends ChessPiece {
     }
 
     if (moveContext.hasAllyOnEight() === false) {
-      possibleMoves.push({
+      attackingMoves.push({
         steps: [
           RelativePosition.LEFT,
           RelativePosition.LEFT,
@@ -87,7 +91,7 @@ export default class Knight extends ChessPiece {
     }
 
     if (moveContext.hasAllyOnTen() === false) {
-      possibleMoves.push({
+      attackingMoves.push({
         steps: [
           RelativePosition.LEFT,
           RelativePosition.LEFT,
@@ -98,7 +102,7 @@ export default class Knight extends ChessPiece {
     }
 
     if (moveContext.hasAllyOnEleven() === false) {
-      possibleMoves.push({
+      attackingMoves.push({
         steps: [
           RelativePosition.FRONT,
           RelativePosition.FRONT,
@@ -108,6 +112,6 @@ export default class Knight extends ChessPiece {
       });
     }
 
-    return possibleMoves;
+    return attackingMoves;
   }
 }
