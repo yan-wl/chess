@@ -19,6 +19,10 @@ export default class ChessConfiguration {
     return this._positionTracker;
   }
 
+  get pieces(): ChessPiece[] {
+    return [...this.positionTracker.pieces];
+  }
+
   getPieceAt(position: ChessPosition): ChessPiece {
     return this.positionTracker.get(position);
   }
@@ -41,9 +45,8 @@ export default class ChessConfiguration {
       throw Error('Invalid move request.');
     }
 
-    const sourcePiece = this.getPieceAt(chessMove.source);
-
     const newPositionTracker = this.positionTracker.clone();
+    const sourcePiece = newPositionTracker.get(chessMove.source);
 
     switch (effect) {
       case MoveEffect.REGULAR:

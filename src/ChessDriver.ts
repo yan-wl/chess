@@ -18,6 +18,16 @@ function prompt(question: string): Promise<string> {
 
 async function start() {
   while (true) {
+    if (chessGame.isCheckmated()) {
+      IO.close();
+      break;
+    }
+
+    if (chessGame.isStalemated()) {
+      IO.close();
+      break;
+    }
+
     IO.write(chessGame.state);
     IO.write('\n');
 

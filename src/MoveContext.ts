@@ -12,6 +12,7 @@ import { RelativePosition } from './RelativePosition';
 import { Orientation } from './Orientation';
 import { PieceType } from './PieceType';
 import { isUnderAttack } from './AttackTracker';
+import { PieceColour } from './PieceColour';
 
 export default class MoveContext
   implements
@@ -22,20 +23,17 @@ export default class MoveContext
     QueenMoveContext,
     KingMoveContext {
   private _configuration: ChessConfiguration;
-  private _piecePosition: ChessPosition;
   private _piece: ChessPiece;
   private _history: MoveHistory;
   private _orientation: Orientation;
 
   constructor(
     configuration: ChessConfiguration,
-    piecePosition: ChessPosition,
     piece: ChessPiece,
     history: MoveHistory,
     orientation: Orientation
   ) {
     this._configuration = configuration;
-    this._piecePosition = piecePosition;
     this._piece = piece;
     this._history = history;
     this._orientation = orientation;
@@ -43,10 +41,10 @@ export default class MoveContext
 
   isOnSeventhRank(): boolean {
     return (
-      this._piecePosition
+      this._piece.position
         .apply([RelativePosition.FRONT], this._orientation)
         .isWithinBoundary() &&
-      !this._piecePosition
+      !this._piece.position
         .apply(
           [RelativePosition.FRONT, RelativePosition.FRONT],
           this._orientation
@@ -64,7 +62,7 @@ export default class MoveContext
   }
 
   hasPieceInFront(): boolean | undefined {
-    const frontPosition = this._piecePosition.apply(
+    const frontPosition = this._piece.position.apply(
       [RelativePosition.FRONT],
       this._orientation
     );
@@ -79,7 +77,7 @@ export default class MoveContext
   }
 
   hasPieceTwoSquaresInFront(): boolean | undefined {
-    const frontPosition = this._piecePosition.apply(
+    const frontPosition = this._piece.position.apply(
       [RelativePosition.FRONT, RelativePosition.FRONT],
       this._orientation
     );
@@ -94,7 +92,7 @@ export default class MoveContext
   }
 
   leftEnPassantIsAllowed(): boolean {
-    const frontLeftPosition = this._piecePosition.apply(
+    const frontLeftPosition = this._piece.position.apply(
       [RelativePosition.FRONT, RelativePosition.LEFT],
       this._orientation
     );
@@ -120,7 +118,7 @@ export default class MoveContext
 
     if (
       latestMove.source !==
-        this._piecePosition.apply(
+        this._piece.position.apply(
           [
             RelativePosition.FRONT,
             RelativePosition.FRONT,
@@ -129,7 +127,10 @@ export default class MoveContext
           this._orientation
         ) ||
       latestMove.destination !==
-        this._piecePosition.apply([RelativePosition.LEFT], this._orientation) ||
+        this._piece.position.apply(
+          [RelativePosition.LEFT],
+          this._orientation
+        ) ||
       !(latestPiece.type === PieceType.PAWN)
     ) {
       return false;
@@ -139,7 +140,7 @@ export default class MoveContext
   }
 
   rightEnPassantIsAllowed(): boolean {
-    const frontRightPosition = this._piecePosition.apply(
+    const frontRightPosition = this._piece.position.apply(
       [RelativePosition.FRONT, RelativePosition.RIGHT],
       this._orientation
     );
@@ -165,7 +166,7 @@ export default class MoveContext
 
     if (
       latestMove.source !==
-        this._piecePosition.apply(
+        this._piece.position.apply(
           [
             RelativePosition.FRONT,
             RelativePosition.FRONT,
@@ -174,7 +175,7 @@ export default class MoveContext
           this._orientation
         ) ||
       latestMove.destination !==
-        this._piecePosition.apply(
+        this._piece.position.apply(
           [RelativePosition.RIGHT],
           this._orientation
         ) ||
@@ -187,7 +188,7 @@ export default class MoveContext
   }
 
   hasEnemyFrontLeft(): boolean {
-    const frontLeftPosition = this._piecePosition.apply(
+    const frontLeftPosition = this._piece.position.apply(
       [RelativePosition.FRONT, RelativePosition.LEFT],
       this._orientation
     );
@@ -209,7 +210,7 @@ export default class MoveContext
   }
 
   hasEnemyFrontRight(): boolean {
-    const frontRightPosition = this._piecePosition.apply(
+    const frontRightPosition = this._piece.position.apply(
       [RelativePosition.FRONT, RelativePosition.RIGHT],
       this._orientation
     );
@@ -231,7 +232,7 @@ export default class MoveContext
   }
 
   hasAllyOnOne(): boolean | undefined {
-    const destination = this._piecePosition.apply(
+    const destination = this._piece.position.apply(
       [RelativePosition.FRONT, RelativePosition.FRONT, RelativePosition.RIGHT],
       this._orientation
     );
@@ -254,7 +255,7 @@ export default class MoveContext
   }
 
   hasAllyOnTwo(): boolean | undefined {
-    const destination = this._piecePosition.apply(
+    const destination = this._piece.position.apply(
       [RelativePosition.RIGHT, RelativePosition.RIGHT, RelativePosition.FRONT],
       this._orientation
     );
@@ -277,7 +278,7 @@ export default class MoveContext
   }
 
   hasAllyOnFour(): boolean | undefined {
-    const destination = this._piecePosition.apply(
+    const destination = this._piece.position.apply(
       [RelativePosition.RIGHT, RelativePosition.RIGHT, RelativePosition.BACK],
       this._orientation
     );
@@ -300,7 +301,7 @@ export default class MoveContext
   }
 
   hasAllyOnFive(): boolean | undefined {
-    const destination = this._piecePosition.apply(
+    const destination = this._piece.position.apply(
       [RelativePosition.BACK, RelativePosition.BACK, RelativePosition.RIGHT],
       this._orientation
     );
@@ -323,7 +324,7 @@ export default class MoveContext
   }
 
   hasAllyOnSeven(): boolean | undefined {
-    const destination = this._piecePosition.apply(
+    const destination = this._piece.position.apply(
       [RelativePosition.BACK, RelativePosition.BACK, RelativePosition.LEFT],
       this._orientation
     );
@@ -346,7 +347,7 @@ export default class MoveContext
   }
 
   hasAllyOnEight(): boolean | undefined {
-    const destination = this._piecePosition.apply(
+    const destination = this._piece.position.apply(
       [RelativePosition.LEFT, RelativePosition.LEFT, RelativePosition.BACK],
       this._orientation
     );
@@ -369,7 +370,7 @@ export default class MoveContext
   }
 
   hasAllyOnTen(): boolean | undefined {
-    const destination = this._piecePosition.apply(
+    const destination = this._piece.position.apply(
       [RelativePosition.LEFT, RelativePosition.LEFT, RelativePosition.FRONT],
       this._orientation
     );
@@ -392,7 +393,7 @@ export default class MoveContext
   }
 
   hasAllyOnEleven(): boolean | undefined {
-    const destination = this._piecePosition.apply(
+    const destination = this._piece.position.apply(
       [RelativePosition.FRONT, RelativePosition.FRONT, RelativePosition.LEFT],
       this._orientation
     );
@@ -419,7 +420,7 @@ export default class MoveContext
       throw Error('Invalid step count.');
     }
 
-    let currentPosition = this._piecePosition;
+    let currentPosition = this._piece.position;
 
     while (stepCount > 1) {
       const frontPosition = currentPosition.apply(
@@ -468,7 +469,7 @@ export default class MoveContext
       throw Error('Invalid step count.');
     }
 
-    let currentPosition = this._piecePosition;
+    let currentPosition = this._piece.position;
 
     while (stepCount > 1) {
       const backPosition = currentPosition.apply(
@@ -517,7 +518,7 @@ export default class MoveContext
       throw Error('Invalid step count.');
     }
 
-    let currentPosition = this._piecePosition;
+    let currentPosition = this._piece.position;
 
     while (stepCount > 1) {
       const leftPosition = currentPosition.apply(
@@ -566,7 +567,7 @@ export default class MoveContext
       throw Error('Invalid step count.');
     }
 
-    let currentPosition = this._piecePosition;
+    let currentPosition = this._piece.position;
 
     while (stepCount > 1) {
       const rightPosition = currentPosition.apply(
@@ -615,7 +616,7 @@ export default class MoveContext
       throw Error('Invalid step count.');
     }
 
-    let currentPosition = this._piecePosition;
+    let currentPosition = this._piece.position;
 
     while (stepCount > 1) {
       const diagonalPosition = currentPosition.apply(
@@ -664,7 +665,7 @@ export default class MoveContext
       throw Error('Invalid step count.');
     }
 
-    let currentPosition = this._piecePosition;
+    let currentPosition = this._piece.position;
 
     while (stepCount > 1) {
       const diagonalPosition = currentPosition.apply(
@@ -713,7 +714,7 @@ export default class MoveContext
       throw Error('Invalid step count.');
     }
 
-    let currentPosition = this._piecePosition;
+    let currentPosition = this._piece.position;
 
     while (stepCount > 1) {
       const diagonalPosition = currentPosition.apply(
@@ -762,7 +763,7 @@ export default class MoveContext
       throw Error('Invalid step count.');
     }
 
-    let currentPosition = this._piecePosition;
+    let currentPosition = this._piece.position;
 
     while (stepCount > 1) {
       const diagonalPosition = currentPosition.apply(
@@ -807,7 +808,7 @@ export default class MoveContext
   }
 
   hasAllyInFront(): boolean | undefined {
-    const frontPosition = this._piecePosition.apply(
+    const frontPosition = this._piece.position.apply(
       [RelativePosition.FRONT],
       this._orientation
     );
@@ -829,7 +830,7 @@ export default class MoveContext
   }
 
   hasAllyBehind(): boolean | undefined {
-    const backPosition = this._piecePosition.apply(
+    const backPosition = this._piece.position.apply(
       [RelativePosition.BACK],
       this._orientation
     );
@@ -851,7 +852,7 @@ export default class MoveContext
   }
 
   hasAllyOnLeft(): boolean | undefined {
-    const leftPosition = this._piecePosition.apply(
+    const leftPosition = this._piece.position.apply(
       [RelativePosition.LEFT],
       this._orientation
     );
@@ -873,7 +874,7 @@ export default class MoveContext
   }
 
   hasAllyOnRight(): boolean | undefined {
-    const rightPosition = this._piecePosition.apply(
+    const rightPosition = this._piece.position.apply(
       [RelativePosition.RIGHT],
       this._orientation
     );
@@ -895,7 +896,7 @@ export default class MoveContext
   }
 
   hasAllyFrontLeft(): boolean | undefined {
-    const frontLeftPosition = this._piecePosition.apply(
+    const frontLeftPosition = this._piece.position.apply(
       [RelativePosition.FRONT, RelativePosition.LEFT],
       this._orientation
     );
@@ -917,7 +918,7 @@ export default class MoveContext
   }
 
   hasAllyFrontRight(): boolean | undefined {
-    const frontRightPosition = this._piecePosition.apply(
+    const frontRightPosition = this._piece.position.apply(
       [RelativePosition.FRONT, RelativePosition.RIGHT],
       this._orientation
     );
@@ -939,7 +940,7 @@ export default class MoveContext
   }
 
   hasAllyBackLeft(): boolean | undefined {
-    const backLeftPosition = this._piecePosition.apply(
+    const backLeftPosition = this._piece.position.apply(
       [RelativePosition.BACK, RelativePosition.LEFT],
       this._orientation
     );
@@ -961,7 +962,7 @@ export default class MoveContext
   }
 
   hasAllyBackRight(): boolean | undefined {
-    const backRightPosition = this._piecePosition.apply(
+    const backRightPosition = this._piece.position.apply(
       [RelativePosition.BACK, RelativePosition.RIGHT],
       this._orientation
     );
@@ -986,7 +987,7 @@ export default class MoveContext
     // Store all valid positions on the left
     const leftPositions: ChessPosition[] = [];
 
-    let leftPosition = this._piecePosition.apply(
+    let leftPosition = this._piece.position.apply(
       [RelativePosition.LEFT],
       this._orientation
     );
@@ -1015,7 +1016,7 @@ export default class MoveContext
     }
 
     // Check if the positions travelled through are being attacked
-    const travellingPositions: ChessPosition[] = [this._piecePosition].concat(
+    const travellingPositions: ChessPosition[] = [this._piece.position].concat(
       leftPositions.slice(0, 2)
     );
 
@@ -1023,10 +1024,11 @@ export default class MoveContext
       travellingPositions.some((position) =>
         isUnderAttack(
           this._configuration,
-          this,
           position,
-          this._piece.colour,
-          this._orientation
+          this._piece.colour === PieceColour.BLACK
+            ? PieceColour.WHITE
+            : PieceColour.BLACK,
+          this._history
         )
       )
     ) {
@@ -1063,7 +1065,7 @@ export default class MoveContext
     // Store all valid positions on the right
     const rightPositions: ChessPosition[] = [];
 
-    let rightPosition = this._piecePosition.apply(
+    let rightPosition = this._piece.position.apply(
       [RelativePosition.RIGHT],
       this._orientation
     );
@@ -1092,7 +1094,7 @@ export default class MoveContext
     }
 
     // Check if the positions travelled through are being attacked
-    const travellingPositions: ChessPosition[] = [this._piecePosition].concat(
+    const travellingPositions: ChessPosition[] = [this._piece.position].concat(
       rightPositions.slice(0, 2)
     );
 
@@ -1100,10 +1102,11 @@ export default class MoveContext
       travellingPositions.some((position) =>
         isUnderAttack(
           this._configuration,
-          this,
           position,
-          this._piece.colour,
-          this._orientation
+          this._piece.colour === PieceColour.BLACK
+            ? PieceColour.WHITE
+            : PieceColour.BLACK,
+          this._history
         )
       )
     ) {

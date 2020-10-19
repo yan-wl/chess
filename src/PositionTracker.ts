@@ -1,7 +1,8 @@
 import ChessPosition from './ChessPosition';
 import ChessPiece from './ChessPiece';
+import Cloneable from './Cloneable';
 
-export default class PositionTracker {
+export default class PositionTracker implements Cloneable<PositionTracker> {
   private _map: Map<ChessPosition, ChessPiece>;
 
   constructor() {
@@ -42,5 +43,9 @@ export default class PositionTracker {
     }
 
     return clone;
+  }
+
+  get pieces(): Set<ChessPiece> {
+    return new Set(this._map.values());
   }
 }

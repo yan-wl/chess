@@ -4,6 +4,8 @@ import MoveContext from './MoveContext';
 import MoveHistory from './MoveHistory';
 import { Orientation } from './Orientation';
 import { PieceColour } from './PieceColour';
+import { inCheck } from './CheckAnalyser';
+import Status from './Status';
 
 export default class ChessBoard {
   private _configurations: ChessConfiguration[];
@@ -28,15 +30,19 @@ export default class ChessBoard {
     return this._orientation;
   }
 
+  get history(): MoveHistory {
+    return this._moveHistory;
+  }
+
   get currentConfiguration(): ChessConfiguration {
     return this._configurations[this._configurations.length - 1];
   }
 
-  move(chessMove: ChessMove): void {
+  move(chessMove: ChessMove): Status {
     const movingPiece = this.currentConfiguration.getPieceAt(chessMove.source);
 
     if (movingPiece === null) {
-      throw Error('Invalid move.');
+      return Status.NO_PIECE;
     }
 
     if (
@@ -47,12 +53,11 @@ export default class ChessBoard {
           this._orientation === Orientation.BLACK)
       )
     ) {
-      throw Error('Invalid move.');
+      return Status.WRONG_COLOUR;
     }
 
     const moveContext = new MoveContext(
       this.currentConfiguration,
-      chessMove.source,
       movingPiece,
       this._moveHistory,
       this._orientation
@@ -75,22 +80,37 @@ export default class ChessBoard {
       );
     });
 
-    // TODO: Add legality checks
-
-    if (allowedMove !== undefined) {
-      const newConfig = this.currentConfiguration.movePiece(
-        chessMove,
-        allowedMove.effect,
-        this._orientation
-      );
-      this._configurations.push(newConfig);
-      this._moveHistory.archive({
-        piece: movingPiece,
-        move: chessMove
-      });
-      this.flip();
-    } else {
-      throw Error('Invalid move.');
+    if (allowedMove === undefined) {
+      return Status.INVALID_MOVE;
     }
+
+    const newConfig = this.currentConfiguration.movePiece(
+      chessMove,
+      allowedMove.effect,
+      this._orientation
+    );
+
+    if (
+      inCheck(
+        newConfig,
+        this._orientation === Orientation.BLACK
+          ? PieceColour.BLACK
+          : PieceColour.WHITE,
+        this._moveHistory
+      )
+    ) {
+      return Status.ILLEGAL_MOVE;
+    }
+
+    this._configurations.push(newConfig);
+
+    this._moveHistory.archive({
+      piece: movingPiece,
+      move: chessMove
+    });
+
+    this.flip();
+
+    return Status.SUCCESS;
   }
 }
